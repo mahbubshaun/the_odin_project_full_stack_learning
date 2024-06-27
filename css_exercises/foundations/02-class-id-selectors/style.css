@@ -1,0 +1,48 @@
+/* 
+:nth-child(odd)
+{
+    color: lightpink;
+    font-family: 'Verdana', 'DejaVu Sans', 'sans-serif';
+
+}
+
+:nth-child(2)
+{
+    color: blue;
+    font-size: 36px;
+}
+
+:nth-child(3)
+{
+    font-size: 24px;
+}
+
+:nth-child(4)
+{
+    background-color: lightgreen;
+    font-size: 24px;
+    font-weight: bold;
+} */
+
+.odd{
+    background-color: lightcoral;
+    font-family: 'Verdana', 'DejaVu Sans', 'sans-serif';
+}
+
+
+#second{
+    color: blue;
+    font-size: 36px;
+}
+
+.third{
+    font-size: 24px;
+
+}
+
+#fourth{
+    background-color: lightgreen;
+    font-size: 24px;
+    font-weight: bold;
+}
+
