@@ -51,6 +51,7 @@
     background-color: cornflowerblue;
     padding: 5px;
     margin: 5px;
-    flex: 1 1 100px;
-    height: 100px;
+    flex: 1 1 auto;
+
+    
   }
