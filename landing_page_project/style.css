@@ -58,7 +58,7 @@ a {
     background-color: #1f2937;
     padding: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex: 1;
 
 }
@@ -97,10 +97,10 @@ a {
     color: #f9faf8;
 }
 
-.item {
+/* .item {
     flex-basis: 100%;
     max-width: 80%;
-}
+} */
 
 .hero_text_container {
     margin-left: 100px;
