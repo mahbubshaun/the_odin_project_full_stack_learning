@@ -2,8 +2,9 @@ const reverseString = function(string) {
     let reversed_string = '';
     let i=string.length-1;
     console.log(i);
-    for( i; i >0 ; i--)
+    for( i; i >= 0 ; i--)
         {
+            console.log(i);
             reversed_string = reversed_string + string[i];
             console.log(reversed_string);
 
@@ -11,7 +12,7 @@ const reverseString = function(string) {
 
         console.log(reversed_string);
 
-        return reversed_string + string[0];
+        return reversed_string;
 
 };
 
