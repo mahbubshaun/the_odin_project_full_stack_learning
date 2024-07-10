@@ -28,11 +28,12 @@ function createGrid(squareNumber) {
     colDiv.forEach((item) => {
         item.addEventListener('mousemove', (e) => {
             console.log(e);
-            if (e.buttons == 1 || e.buttons == 3) {
-                //do some stuff
-                console.log("hold");
-                item.setAttribute('style', 'background-color: black;')
-            }
+            // if (e.buttons == 1 || e.buttons == 3) {
+            //     //do some stuff
+            //     console.log("hold");
+            //     item.setAttribute('style', 'background-color: black;')
+            // }
+            item.setAttribute('style', 'background-color: black;');
 
 
         });
