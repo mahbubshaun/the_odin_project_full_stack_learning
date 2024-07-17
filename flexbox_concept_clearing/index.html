@@ -35,20 +35,36 @@
   
         .flex-container { 
             border: 5px solid rgb(55, 139, 22); 
-            width: 100%; 
+            max-width: 1000px; 
             height: 75%; 
             align-items: center; 
             display: flex; 
         } 
   
         .flex-item { 
-            width: 100%;
-    
+            /* flex-grow: 1;
+            flex-basis: 0; */
+            /* width: calc(100%/3); */
+            /* flex-grow: 1;
+            flex-basis: 0; */
+            /* flex: 1; */
+            /* width: 300px; */
+            /* flex-shrink: 0; */
+            width: 400px;
+            flex-shrink: 1;
             text-align: center; 
             background-color: rgb(184, 233, 181); 
             border: 1px solid #ccc; 
-            margin: 5px 10px; 
+            /* margin: 5px 10px;  */
         } 
+
+        .item-3{
+            flex-shrink: 2;
+        }
+
+        .item-2{
+            flex-shrink: 3;
+        }
     </style> 
 </head> 
   
@@ -60,13 +76,13 @@
         </h2> 
         <div class="flex-container"> 
             <div class="flex-item"> 
-                Item 1 dslfklflkdsmfklsdmjdsklklfdslkfjklsdkfldf
+                Item 1  
             </div> 
-            <div class="flex-item"> 
-                Item 2 stssrtst
+            <div class="flex-item item-2"> 
+                Item 2
             </div> 
-            <div class="flex-item align-right"> 
-                Item 3 
+            <div class="flex-item align-right item-3"> 
+                Item 3  
             </div> 
         </div> 
     </div> 
