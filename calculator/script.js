@@ -6,7 +6,7 @@ function findOperators()
 {
     
     const matches = display.textContent.match(regex);
-    let operators;
+    let operators = [];
     if (matches) {
         operators = matches;
         console.log(`Operator found: ${operators}`);
@@ -46,7 +46,7 @@ function operate(num1, num2, operator)
     }
 
     console.log(value);
-    return value;
+    return value.toFixed(1);
 
 }
 
