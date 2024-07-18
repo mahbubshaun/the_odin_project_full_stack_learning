@@ -12,7 +12,7 @@
     background-color: aliceblue;
 }
 #app-main-container{
-    height: 80vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,17 +38,32 @@
     flex-direction: column;
     flex-grow: 4;
 
+
     /* gap: 20px; */
 }
 
-.row{
-    display: flex;
+#buttons .row button{
     flex:1;
+  
 }
 
-.row >button{
-    flex: 1;
-}
+/* .row {
+    display: flex;
+    flex:1;
+    gap: 10px;
+    
+} */
+
+/* .row button{
+    flex:1;
+    gap: 10px;
+
+} */
+
+/* .row >button{
+    display: flex;
+    gap: 10px;
+} */
 
 
 
@@ -62,7 +77,10 @@
 }
 
  button{
-    flex: 1;
+    flex: 1 1 60px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: red;
     
 }
 
@@ -72,13 +90,13 @@
     flex-grow: 3;
 }
 
-.sub-row-con button{
+/* .sub-row-con button{
     flex: 1;
-}
+} */
 
-.row-3{
+/* .row-3{
     flex:1;
-}
+} */
 
 .equal-container{
     flex-grow: 3;
@@ -93,6 +111,15 @@
     padding: 20px;
     flex-grow: 1;
 } 
+
+.ui-container{
+    display: flex;
+    flex:1;
+    gap: 10px;
+ 
+}
+
+
 
 /* .sub-container{
     display: flex;
