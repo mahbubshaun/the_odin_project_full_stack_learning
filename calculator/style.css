@@ -25,9 +25,9 @@ body{
 
 #app-sub-container{
     background-color: #25313d;
+    border: 1rem ridge white;
     border-radius: 20px;
-    padding:20px;
-    width: 300px;
+    padding:10px;
     height: 500px;
     display: flex;
     flex-direction: column;
@@ -54,7 +54,7 @@ button{
     display: flex;
     justify-content: end;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     flex-grow: 1;
     font-size: 30px;
     font-weight: bold;
