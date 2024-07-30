@@ -26,8 +26,16 @@
         }
 
         .group1 ~ div{
-            
+
         }
+
+        .emojify::before {
+    content: '😎 🥸 🤓';
+}
+
+  .emojify::after {
+    content: '🤓 🥸 😎';
+}
 
 
     </style>
@@ -44,5 +52,6 @@
           <div class="grand-child group3"></div>
         </div>
       </main>
+      <div> Let's <span class="emojify">emojify</span>this span!</div>
 </body>
 </html>
