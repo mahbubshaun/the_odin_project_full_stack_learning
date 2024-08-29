@@ -19,6 +19,9 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .second_div{
@@ -38,4 +41,25 @@ body{
     align-items: center;
     justify-content: center;
 
+}
+
+.credit{
+    margin-bottom: 20px;
+    color: white;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.underline{
+    text-decoration: underline;
+}
+
+.underline::before{
+    /* content: "\00a0"; */
+}
+.space{
+    word-spacing: 5px;
 }
