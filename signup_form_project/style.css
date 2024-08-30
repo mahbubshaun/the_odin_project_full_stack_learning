@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'norsebold';
+    src: url('assets/fonts/norse-bold-webfont.woff') format('woff2'),
+         url('assets/fonts/norse-bold-webfont.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +19,7 @@ body{
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    
 }
 
 .first_div{
@@ -40,6 +50,7 @@ body{
     color: white;
     align-items: center;
     justify-content: center;
+    font-family: 'norsebold';
 
 }
 
@@ -50,16 +61,27 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+ 
 }
 
 
+
+
+
+.credit a {
+    color: inherit;
+    margin: 0 4px; /* Adjust the margin as needed */
+}
 .underline{
     text-decoration: underline;
+
 }
 
-.underline::before{
-    /* content: "\00a0"; */
-}
-.space{
-    word-spacing: 5px;
+
+.second_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+
 }
