@@ -87,9 +87,10 @@ body{
 }
 
 .first_section{
+    height: 100/3vh;;
     background-color: #f9fafc;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 }
 
@@ -97,4 +98,65 @@ body{
     font-size: medium;
     /* letter-spacing: -0.15em; */
     padding: 20px;
+    font-weight: bold;
+}
+
+.space{
+    margin: 20px 0 ;
+}
+
+
+.third_section{
+    background-color: #f9fafc;
+    height: 100/3vh;
+    
+}
+
+.sub-section{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
+
+}
+
+.second_section{
+    height: 100/3vh;
+    padding: 20px;
+}
+
+.form_header{
+    font-weight: bolder;
+}
+
+.flx{
+    display: flex;
+    flex-direction: column;
+   
+
+}
+
+
+.flx_row{
+    display: flex;
+    gap: 50px;
+
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap:20px
+}
+
+input{
+    font-family: inherit;
+    font-size: 100%;
+    padding: 0;
+  margin: 0;
+  /* box-sizing: border-box; */
+  /* border: 1px thick white; */
+    /* background: #f9fafc; */
 }
