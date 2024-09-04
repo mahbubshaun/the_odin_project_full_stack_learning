@@ -35,7 +35,7 @@ body{
 }
 
 .second_div{
-    background-color: rgb(255, 0, 60);
+   
     width: 70%;
 }
 
@@ -84,4 +84,17 @@ body{
     justify-content: space-between;
     gap: 10px;
 
+}
+
+.first_section{
+    background-color: #f9fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.first_text{
+    font-size: medium;
+    /* letter-spacing: -0.15em; */
+    padding: 20px;
 }
