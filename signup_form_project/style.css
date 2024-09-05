@@ -24,7 +24,7 @@ body{
 
 .first_div{
     background-color: aqua;
-    width: 30%;
+    width: 40%;
     background-image: url('assets/image/halie-west-25xggax4bSA-unsplash.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -36,7 +36,7 @@ body{
 
 .second_div{
    
-    width: 70%;
+    width: 60%;
 }
 
 .first_div, .second_div{
@@ -81,13 +81,12 @@ body{
 .second_div{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 10px;
 
 }
 
 .first_section{
-    height: 100/3vh;;
+   
     background-color: #f9fafc;
     display: flex;
     justify-content: left;
@@ -108,26 +107,33 @@ body{
 
 .third_section{
     background-color: #f9fafc;
-    height: 100/3vh;
+    padding: 30px 0px 0px 20px;
+
+    height: 100vh;
+    /* border-top: 1px solid rgb(26, 23, 23); */
+    border-top-style: groove;
+    
     
 }
 
 .sub-section{
-    padding: 20px;
+
     display: flex;
     justify-content: center;
     align-items: left;
     flex-direction: column;
+    gap: 15px;
 
 }
 
 .second_section{
-    height: 100/3vh;
+   
     padding: 20px;
 }
 
 .form_header{
-    font-weight: bolder;
+    font-size: large;
+    font-weight: bold;
 }
 
 .flx{
@@ -156,7 +162,28 @@ input{
     font-size: 100%;
     padding: 0;
   margin: 0;
+  appearance: none;
+  border: 1px solid #D6D9DC;
   /* box-sizing: border-box; */
   /* border: 1px thick white; */
     /* background: #f9fafc; */
+}
+
+label{
+    font-size: 14px;
+    font-weight:550;
+}
+
+#create_account{
+    background-color: #596D48;
+    padding: 10px 30px 10px 30px;
+    border-radius: 7px;
+    color: white;
+
+}
+
+.link{
+    text-decoration: none;
+    color: green;
+    font-weight: 600;
 }
