@@ -162,11 +162,8 @@ input{
     font-size: 100%;
     padding: 0;
   margin: 0;
-  appearance: none;
-  border: 1px solid #D6D9DC;
-  /* box-sizing: border-box; */
-  /* border: 1px thick white; */
-    /* background: #f9fafc; */
+  border: 1px solid #E5E7EB;
+
 }
 
 label{
@@ -179,6 +176,8 @@ label{
     padding: 10px 30px 10px 30px;
     border-radius: 7px;
     color: white;
+    cursor: pointer;
+    border: none;
 
 }
 
@@ -187,3 +186,32 @@ label{
     color: green;
     font-weight: 600;
 }
+:focus{
+    outline: 0;
+}
+input:invalid{
+    background-color: transparent;
+    border: 1px solid #b92326;
+}
+
+input:focus{
+    border: 1px solid #330eea;
+
+}
+
+input[type='password']:invalid{
+    background-color: transparent;
+    border: 1px solid #b92326;
+
+}
+
+.error-message {
+    display: none;
+    color: red;
+    font-size: 12px;
+  }
+
+  /* Show error message when the input is invalid */
+  input:invalid + .error-message {
+    display: block;
+  }

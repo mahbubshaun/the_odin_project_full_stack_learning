@@ -86,11 +86,13 @@
                 <div class="flx_row">
                     <div class="flx">
                         <label for="pass">PASSWORD</label>
-                        <input type="password" id="pass" name="pass">
+                        <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" title="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long." id="pass" name="pass" required>
+                        <span class="error-message">*Password do not match</span>
+                    
                     </div>
                     <div class="flx">
                         <label for="con_pass">CONFIRM PASSWORD</label>
-                        <input type="password" id="con_pass" name="con_pass">
+                        <input type="password" id="con_pass" name="con_pass" required>
 
                     </div>
                 </div>
