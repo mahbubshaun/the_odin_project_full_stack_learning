@@ -85,15 +85,20 @@ body{
     
 }
 
-.item{
-    flex: 1 1 auto;
-}
+/* .item{
+    flex: 1;
+} */
 
+/* .first_section, .second_section, .third_section{
+    flex: 1;
+} */
 .first_section{
     background-color: #f9fafc;
+    height: 200px;
     display: flex;
     justify-content: left;
     align-items: center;
+    
 }
 
 .first_text{
@@ -108,15 +113,7 @@ body{
 }
 
 
-.third_section{
-    background-color: #f9fafc;
-    padding: 30px 0px 0px 20px;
 
-    /* border-top: 1px solid rgb(26, 23, 23); */
-    border-top-style: groove;
-    
-    
-}
 
 .sub-section{
 
@@ -130,36 +127,40 @@ body{
 
 .second_section{
     padding: 20px;
+    height: 150px;
     display: flex;
-
 }
 
+form{
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    /* gap:20px; */
+ 
+}
+
+form *{
+    flex-shrink: 1;
+}
+
+.second_section *{
+
+}
 .form_header{
     font-size: large;
     font-weight: bold;
 }
-
-.flx{
-    display: flex;
-    flex-direction: column;
-   
-
-}
-
-
 .flx_row{
     display: flex;
     gap: 50px;
 
 }
 
-
-form{
+.flx{
     display: flex;
     flex-direction: column;
-    gap:20px;
-    flex: 1;
 }
+
 
 input{
     font-family: inherit;
@@ -172,7 +173,7 @@ input{
 
 label{
     font-size: 14px;
-    font-weight:550;
+    font-weight: bold;
 }
 
 #create_account{
@@ -220,8 +221,15 @@ input[type='password']:invalid{
     display: block;
   }
 
-  .first_section, .third_section{
-    flex-grow: 4;
-  }
+  .third_section{
+    background-color: #f9fafc;
+    padding: 30px 0px 0px 20px;
+    margin-top: 10px;
+    height: 200px;
 
-  
+    /* border-top: 1px solid rgb(26, 23, 23); */
+    box-shadow:  inset 0px 4px 3px rgba(193, 179, 179, 0.75);
+    
+    
+}
+
