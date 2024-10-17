@@ -3,12 +3,18 @@
   padding: 0;
 }
 
+body{
+
+}
+
 .container {
+ 
   text-align: center;
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: repeat(4, 1fr);
+  /* grid-template-rows: 125px repeat(auto-fill, minmax(150px, 1fr)) 100px; */
   gap: 4px 4px;
+  /* height: 100vh; */
 }
 
 .container div {
@@ -24,7 +30,8 @@
   grid-column-start: 1;
   grid-column-end: 3;
   display: grid;
-  grid-template-columns: 2fr 2fr;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
 
 }
 
@@ -42,7 +49,7 @@
 .menu ul{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 50px;
+  /* grid-template-rows: 50px; */
   justify-items: center;
   align-items: center;
 }
@@ -58,14 +65,15 @@
   justify-items: center;
   gap: 50px; */
   
-  grid-column-start: 1;
-  grid-column-end: 2;
+  /* grid-column-start: 1;
+  grid-column-end: 2; */
   grid-row: 2 / 4;
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, 30px);
+  /* grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, minmax(100px, 1fr)); */
   gap: 50px;
-
+  /* justify-items: stretch;
+  align-items: stretch; */
 
   
 }
@@ -76,7 +84,9 @@
   font-size: 12px;
   font-weight: normal;
   border-radius: 10px;
-  place-self: stretch;
+  display: grid;
+  justify-items: center;
+  align-items: center;
 }
 
 
@@ -85,25 +95,40 @@
   color: black;
   font-size: 16px;
   font-weight: normal;
-  place-self: stretch;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+
 }
 
 .nav {
   grid-column: 2 / 3;
   background-color: #C50208;
+  height: 25px;
 }
 
+.nav ul{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  /* justify-items: start;
+  align-items: center; */
+
+}
 .nav ul li {
   font-size: 16px;
   text-transform: uppercase;
+  list-style: none;
 }
 
 .article {
-  grid-column: 2 / 3;
   background-color: #bccbde;
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
+  grid-template-rows: auto; */
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
 }
 
@@ -125,6 +150,7 @@
   color: black;
   font-weight: normal;
   font-size: 14px;
+  padding: 5px;
 }
 
 .card .title {
