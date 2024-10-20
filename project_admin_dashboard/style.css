@@ -13,15 +13,18 @@
     padding:0;
 }
 
+body, html{
+    height: 100%;
+    font-family: 'robotomedium';
+}
 ul{
     list-style: none;
 }
 
 .container{
-    height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: repeat(10, 1fr);
+    height: 100vh;
 }
 
 .sidebar{
@@ -54,10 +57,31 @@ ul{
 }
 
 .project-card{
-    grid-column: 2 / 3;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 15px;
     gap: 15px;
+    
+    /* grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 15px; */
+}
+
+.main-content{
+    background-color: #bccbde;
+    grid-column: 2 / 3;
+    grid-row: 2 / 12;
+    display: grid;
+    /* grid-template-columns: 2fr 1fr; */
+    padding-right: 30px;
+
+ 
+}
+
+.container-cards{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 .header{
@@ -84,4 +108,109 @@ ul{
 
 .card{
     height: 200px;
+    padding: 10px;
+    color: black;
+    display: grid;
+    gap: 5px;
+    background-color: #FFFFFF;
+  color: black;
+  border-left: 6px solid #b45309;
+  border-radius: 10px;
+
+}
+
+
+.card-buttons{
+    display: flex;
+    justify-content: end;
+    gap:5px;
+}
+
+.side-bar-announcement{
+    grid-template-columns: 2/3;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(20px, 1fr));
+    gap: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.announcement{
+    grid-row: 2 / 4;
+    background-color: #FFFFFF;
+    color: black;
+    display: grid;
+    gap: 5px;
+    padding: 10px;
+    grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+width: 100%;
+}
+
+.items{
+    border-bottom: 2px solid #bccbde;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+white-space: nowrap;
+    /* gap: 1rem; */
+  /* position: relative; */
+    /* white-space: nowrap; */
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+    /* white-space: nowrap; Prevents text from wrapping */
+  /* overflow: hidden; Hides overflowing text */
+  /* text-overflow: ellipsis; Adds "..." to indicate overflow */
+}
+/* 
+.items::after {
+    content: "......";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: white; /* Adjust depending on background */
+    /* padding-left: 5px;  */
+      
+/* } */ 
+
+/* .items p{
+    font-size: small;
+    overflow: hidden;
+    /* white-space: nowrap;
+    overflow: hidden;
+  text-overflow: ellipsis; */
+/* } */ 
+
+.items p{
+    font-size: 20px;
+    color: #475569;
+    font-size: 10px;
+}
+
+.title{
+    font-size: 15px !important;
+    font-weight: bold;
+}
+.items > * {
+    flex-shrink: 1; /* Allow child elements to shrink */
+    min-height: 0;  
+  }
+.trending{
+    grid-row: 8 / 10;
+    background-color: #FFFFFF;
+}
+
+.titles{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.project{
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+.announce{
+    padding-top: 10px;
 }
