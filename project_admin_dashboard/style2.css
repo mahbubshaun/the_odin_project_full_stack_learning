@@ -232,6 +232,11 @@ input[type=text] {
     padding-bottom: 15px; */
 }
 
+.card-buttons{
+    display: flex;
+    justify-content: end;
+    gap:5px;
+}
 .announcement{
     background-color: #FFFFFF;
     color: black;
