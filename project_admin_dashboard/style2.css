@@ -198,6 +198,7 @@ input[type=text] {
 
 .announce{
     grid-area: announce;
+    margin-left: 15px;
 }
 .project-card{
     grid-area: project-card;
@@ -211,7 +212,7 @@ input[type=text] {
 
 .card{
     height: 200px;
-    padding: 10px;
+    padding: 30px;
     color: black;
     display: grid;
     gap: 5px;
@@ -225,7 +226,7 @@ input[type=text] {
 .side-bar-announcement{
     grid-area: side-bar-announcement;
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr .1fr 1fr;
     gap: 10px;
     padding: 15px;
 
@@ -236,7 +237,7 @@ input[type=text] {
 .card-buttons{
     display: flex;
     justify-content: end;
-    gap:5px;
+    gap:15px;
 }
 .announcement{
     background-color: #FFFFFF;
@@ -263,8 +264,13 @@ input[type=text] {
 }
 
 .title{
-    font-size: 15px !important;
+    font-size: 20px !important;
     font-weight: bold;
+}
+
+.desc{
+    font-size: 15px;
+    color: #808080;
 }
 
 .trending{
@@ -346,3 +352,35 @@ li a{
 button{
     cursor: pointer;
 }
+
+.card-buttons{
+    /* width: 400px;
+    height: 100px; */
+}
+
+.card-buttons svg{
+    
+    width: 30px;
+    height: 48px;
+    
+    
+}
+
+.trending-card {
+    width: 200px;
+    height: 44px;
+    display: flex;
+    gap: 5px;
+    padding-bottom: 10px;
+  }
+
+  .img_div{
+    width: 50px;
+    height: 44px;
+  }
+  
+  .img {
+    width: 100%;
+    height: 100%;
+  }
+  
