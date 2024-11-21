@@ -33,3 +33,12 @@ function Book(title, author, pages)
 const book1 = new Book('The Hobbit', 'J.R.R. Tolkien', '255');
 
 console.log(book1.info())
+
+
+
+Player.prototype.sayHello = function()
+{
+    console.log("Hello I'm a player!");
+}
+
+playersh.sayHello();
