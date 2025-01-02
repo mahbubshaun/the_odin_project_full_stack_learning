@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        input:invalid {
+            border: 2px solid red;
+        }
+
+        input:valid {
+            border: 2px solid green;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="username">Username (min 5 characters):</label>
+            <input type="text" id="username" name="username" minlength="5" required>
+            <div class="error-message" id="usernameError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-message" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password (min 8 characters):</label>
+            <input type="password" id="password" name="password" minlength="8" required>
+            <div class="error-message" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div class="error-message" id="confirmPasswordError"></div>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        const usernameError = document.getElementById('usernameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+        const validateField = (input, errorElement, customValidator) => {
+            if (input.validity.valid && (!customValidator || customValidator())) {
+                errorElement.textContent = '';
+            } else {
+                const message = input.validity.valueMissing ? 'This field is required.' : input.validationMessage;
+                errorElement.textContent = customValidator ? customValidator() : message;
+            }
+        };
+
+        usernameInput.addEventListener('blur', () => {
+            validateField(usernameInput, usernameError);
+        });
+
+        emailInput.addEventListener('blur', () => {
+            validateField(emailInput, emailError);
+        });
+
+        passwordInput.addEventListener('blur', () => {
+            validateField(passwordInput, passwordError);
+        });
+
+        confirmPasswordInput.addEventListener('blur', () => {
+            validateField(confirmPasswordInput, confirmPasswordError, () => {
+                return passwordInput.value !== confirmPasswordInput.value ? 'Passwords do not match.' : '';
+            });
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            validateField(usernameInput, usernameError);
+            validateField(emailInput, emailError);
+            validateField(passwordInput, passwordError);
+            validateField(confirmPasswordInput, confirmPasswordError, () => {
+                return passwordInput.value !== confirmPasswordInput.value ? 'Passwords do not match.' : '';
+            });
+
+            if (form.checkValidity()) {
+                alert('Form submitted successfully!');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
