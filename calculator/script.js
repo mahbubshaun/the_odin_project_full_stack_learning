@@ -200,3 +200,7 @@ container.addEventListener('click', (event) => {
     display.textContent = currentDisplay.trim();
 
 });
+
+module.exports = {
+    operate,
+}
