@@ -3,6 +3,8 @@ const gameBoardContainer = document.querySelector('#gameBoard');
 const restartElement = document.querySelector('.restart-button')
 
 
+
+
 function GameBoard(){
     const rows = 3;
     const columns = 3;
@@ -104,6 +106,11 @@ function GameController(playerOneGame = 'Player one', playerTwoGame = 'Player tw
         board.resetBoard();
     }
 
+    const resetActivePlayer = () =>
+    {
+        activePlayer = players[0];
+    }
+
     const checkWinner = () =>
     {
         const boardCells = board.getBoard();
@@ -171,7 +178,7 @@ function GameController(playerOneGame = 'Player one', playerTwoGame = 'Player tw
 
     printNewRound();
 
-    return {playTurn, getActivePlayer, printCurrentBoard, resetCurrentBoard, getPlayerWinCount, switchPlayerTurn, updatePlayerWinCount, checkWinner}
+    return {playTurn, resetActivePlayer, getActivePlayer, printCurrentBoard, resetCurrentBoard, getPlayerWinCount, switchPlayerTurn, updatePlayerWinCount, checkWinner}
 
 
 }
@@ -197,6 +204,8 @@ const game = GameController();
 // board.fillBoardCell(1,1,2);
 
 // board.printBoard();
+
+
 
 const cells = Array.from(gameBoardContainer.children);
 cells.forEach(cell => cell.addEventListener('click', function(event){
@@ -262,7 +271,22 @@ restartElement.addEventListener('click', ()=>
 {
     cells.forEach(cell => cell.textContent = '');
     game.resetCurrentBoard();
-    statusElement.textContent = ''
+    if(restartElement.textContent === 'Start Game')
+        {
+            restartElement.textContent = 'Restart Game';
+            statusElement.textContent = `${game.getActivePlayer().name}'s turn. `
+            
+            
+            
+            
+        }else{
+            restartElement.textContent = 'Start Game';
+            game.resetActivePlayer();
+            statusElement.textContent = ''
+    
+        }
+        
+        
 
 
 });
