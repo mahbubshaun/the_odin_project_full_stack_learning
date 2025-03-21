@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="title">Book Tracker</h1>
+      <div class="book-container">
+      </div>
+      <div class="new-book-button-container">
+        <button class="new-book-button">Add New Book</button>
+      </div>
+      <div class="dialog-container">
+        <dialog id="favDialog">
+          <form method="dialog" id="dialog-form">
+            <div class="row-container">
+                <div class="row">
+                    <div class="label-container">
+                        <label for="btitle">Book Title:</label>
+
+                    </div>
+                    <div class="input-container">
+                        <input type="text" id="btitle" name="btitle" required />
+                    </div>
+                   
+                   
+                  </div>
+                  <div class="row">
+                    <div class="label-container">
+                        <label for="bauthor">Author:</label>
+
+                    </div>
+                    <div class="input-container">
+                        <input type="text" id="bauthor" name="bauthor"  required/>
+
+                    </div>
+                    
+                    
+                   
+                  </div>
+      
+                  <div class="row">
+                    <div class="label-container">
+                        <label for="bpages">Pages:</label>
+
+                    </div>
+                    <div class="input-container">
+                        <input type="text" id="bpages" name="bpages" required />
+
+                    </div>
+                    
+                  </div>
+      
+                  <div class="row">
+                    <div class="label-container">
+                        <label for="bimage">Image URL:</label>
+
+                    </div>
+                    <div class="input-container">
+                        <input type="text" id="bimage" name="bstatus" />
+                    </div>
+                    
+                  </div>
+      
+                  <div class="row form-button">
+                    <button value="cancel" id="cancel" formmethod="dialog">Cancel</button>
+                    <button id="confirmBtn" value="default">Confirm</button>
+                  </div>
+
+            </div>
+           
+          </form>
+        </dialog>
+      </div>
+    </div>
+  </body>
+</html>

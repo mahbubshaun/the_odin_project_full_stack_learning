@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch Lernen - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="german-flag.png" alt="Logo">
+            <span>Deutsch Lernen</span>
+        </div>
+        <nav>
+            <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="lessons.html"><i class="fas fa-book"></i> Lessons</a>
+            <a href=""><i class="fas fa-chart-line"></i> Progress</a>
+            <a href="#"><i class="fas fa-trophy"></i> Achievements</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search lessons...">
+            </div>
+            <div class="user-area">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="profile-placeholder.jpg" alt="Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Welcome Card -->
+            <div class="card welcome-card">
+                <div class="welcome-text">
+                    <h2>Welcome back, John! 👋</h2>
+                    <p>Ready to continue your German journey?</p>
+                </div>
+                <div class="streak-info">
+                    <div class="streak-count">
+                        <i class="fas fa-fire"></i>
+                        <span>5 Day Streak</span>
+                    </div>
+                    <div class="level-badge">
+                        Level A2
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Progress Card -->
+            <div class="card progress-card">
+                <h3>Today's Progress</h3>
+                <div class="circular-progress">
+                    <div class="progress-ring">
+                        <span class="percentage">80%</span>
+                    </div>
+                </div>
+                <p>8/10 Daily Goals Completed</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Quick Start</h3>
+                <div class="action-buttons">
+                    <button class="action-btn vocab">
+                        <i class="fas fa-book"></i>
+                        <span>Vocabulary</span>
+                    </button>
+                    <button class="action-btn grammar">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>Grammar</span>
+                    </button>
+                    <button class="action-btn speaking">
+                        <i class="fas fa-microphone"></i>
+                        <span>Speaking</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="activity-details">
+                            <p>Completed Lesson: Basic Verbs</p>
+                            <span>2 hours ago</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-star"></i>
+                        <div class="activity-details">
+                            <p>Earned: Perfect Score Badge</p>
+                            <span>Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Lessons -->
+            <div class="card next-lessons">
+                <h3>Recommended Next Steps</h3>
+                <div class="lesson-list">
+                    <div class="lesson-item">
+                        <div class="lesson-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="lesson-details">
+                            <h4>Past Tense Basics</h4>
+                            <p>15 min lesson</p>
+                        </div>
+                        <button class="start-btn">Start</button>
+                    </div>
+                    <div class="lesson-item">
+                        <div class="lesson-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="lesson-details">
+                            <h4>Daily Conversations</h4>
+                            <p>20 min practice</p>
+                        </div>
+                        <button class="start-btn">Start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

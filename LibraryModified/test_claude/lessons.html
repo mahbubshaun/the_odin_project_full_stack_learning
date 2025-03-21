@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German Lessons</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lessons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Deutsch Lernen</div>
+        <div class="user-menu">
+            <span class="username">John Doe</span>
+            <div class="progress-indicator">Level A1</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="lessons-header">
+            <h1>German Lessons</h1>
+            <div class="progress-overview">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 30%"></div>
+                </div>
+                <span>30% Complete</span>
+            </div>
+        </div>
+
+        <div class="lessons-grid">
+            <!-- Lessons will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <template id="lesson-template">
+        <div class="lesson-card">
+            <div class="lesson-status"></div>
+            <h3 class="lesson-title"></h3>
+            <p class="lesson-description"></p>
+            <div class="lesson-meta">
+                <span class="duration"></span>
+                <span class="points"></span>
+            </div>
+            <button class="start-button">Start Lesson</button>
+        </div>
+    </template>
+
+    <script src="lessons.js"></script>
+</body>
+</html>
