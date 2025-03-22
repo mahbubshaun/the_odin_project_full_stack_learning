@@ -5,10 +5,11 @@
     "globals": "^15.14.0",
     "jest": "^29.7.0",
     "tailwindcss": "^3.4.17",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
     "test": "jest"
   }
-
 }

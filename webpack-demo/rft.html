@@ -1,0 +1,2631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFQ Tracker System</title>
+    <!-- Add required Excel library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary: #5e35b1;
+            --primary-light: #7e57c2;
+            --secondary: #f5f5f5;
+            --dark: #333;
+            --light: #fff;
+            --error: #f44336;
+            --success: #4caf50;
+            --warning: #ff9800;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            margin: 0;
+            padding: 0 20px;
+        }
+        
+        nav {
+            background-color: var(--primary-light);
+            padding: 10px 0;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0 20px;
+            display: flex;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-container {
+            background-color: var(--light);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .form-header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .form-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+        
+        .form-group {
+            flex: 1 1 calc(33.333% - 20px);
+            min-width: 250px;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .btn-primary:hover {
+            background-color: #4527a0;
+        }
+        
+        .btn-secondary {
+            background-color: #9e9e9e;
+            color: var(--light);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #757575;
+        }
+        
+        .btn-danger {
+            background-color: var(--error);
+            color: var(--light);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: var(--primary);
+            color: var(--light);
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+        
+        table tbody tr:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+        
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .filter-select {
+            min-width: 150px;
+        }
+        
+        .status-high {
+            color: var(--error);
+            font-weight: 500;
+        }
+        
+        .status-medium {
+            color: var(--warning);
+            font-weight: 500;
+        }
+        
+        .status-low {
+            color: var(--success);
+            font-weight: 500;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .alert-error {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: var(--light);
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: var(--light);
+        }
+        
+        .badge-danger {
+            background-color: var(--error);
+            color: var(--light);
+        }
+        
+        /* Operator badge */
+        .operator-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.1);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        /* Excel status area styles */
+        #excel-status {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .btn-row {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>RFQ Tracker System</h1>
+        <div class="operator-badge">Operator: <span id="current-user">Enrique</span></div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link active" data-tab="input-tab">RFQ Input</a></li>
+            <li><a href="#" class="nav-link" data-tab="dashboard-tab">RFQ Dashboard</a></li>
+            <!-- <li><a href="#" class="nav-link" data-tab="records-tab">All Records</a></li> -->
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Alerts -->
+        <div id="alert-success" class="alert alert-success">Operation completed successfully!</div>
+        <div id="alert-error" class="alert alert-error">An error occurred. Please try again.</div>
+        
+        <!-- Input Tab -->
+        <div id="input-tab" class="tab-content active">
+            <!-- Excel Data Management section -->
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Excel Data Management</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label for="excel-file">Upload Excel File</label>
+                        <input type="file" id="excel-file" accept=".xlsx, .xls">
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Upload your existing RFQ Excel file to load data</p>
+                    </div>
+                    
+                    <div class="form-group" style="flex: 1; display: flex; align-items: flex-end;">
+                        <button type="button" id="download-excel" class="btn btn-primary" style="width: 100%; margin-bottom: 5px;" disabled>
+                            Download Updated Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="excel-status" style="display: none;">
+                    <div style="font-weight: bold; margin-bottom: 5px;">Excel File Status:</div>
+                    <div id="excel-status-message">No file uploaded yet</div>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>New RFQ Entry Form</h2>
+                </div>
+                
+                <form id="rfq-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rfq-number">RFQ#</label>
+                            <input type="text" id="rfq-number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-title">Project Title</label>
+                            <input type="text" id="project-title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyer">Buyer</label>
+                            <!-- <select id="buyer" required>
+                                <option value="">Select Buyer</option>
+                                <option value="Smith, John">Smith, John</option>
+                                <option value="Johnson, Lisa">Johnson, Lisa</option>
+                                <option value="Williams, Robert">Williams, Robert</option>
+                                <option value="Brown, Sarah">Brown, Sarah</option>
+                            </select> -->
+                            <input type="text" id="buyer" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Hardware">Hardware</option>
+                                <option value="Software">Software</option>
+                                <option value="Services">Services</option>
+                                <option value="Consulting">Consulting</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <select id="priority" required>
+                                <option value="">Select Priority</option>
+                                <option value="High">0</option>
+                                <option value="Medium">1</option>
+                                <option value="Low">2</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stage-merck">Stage (Merck)</label>
+                            <select id="stage-merck">
+                                <option value="">Select Stage</option>
+                                <option value="New Request">New Request</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Awaiting Info">Awaiting Info</option>
+                                <option value="Vendor Negotiation">Vendor Negotiation</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stage-nomia">Stage (Nomia)</label>
+                            <select id="stage-nomia">
+                                <option value="">Select Stage</option>
+                                <option value="Reviewing">Reviewing</option>
+                                <option value="Requirements Gathering">Requirements Gathering</option>
+                                <option value="Quote Preparation">Quote Preparation</option>
+                                <option value="Submitted">Submitted</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyer-status">Buyer Latest Status</label>
+                            <input type="text" id="buyer-status">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="action-with">Action With</label>
+                            <select id="action-with">
+                                <option value="">Select</option>
+                                <option value="Buyer">Buyer</option>
+                                <option value="Vendor">Vendor</option>
+                                <option value="Nomia">Nomia</option>
+                                <option value="Stakeholder">Stakeholder</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1 1 100%;">
+                            <label for="brief-update">Brief Update</label>
+                            <textarea id="brief-update" placeholder="e.g., Sent email to Supplier (Acme Corp) with onboarding instructions..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1 1 100%;">
+                            <label for="manager-comments">Manager Comments</label>
+                            <textarea id="manager-comments"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date-initiated">Date Initiated</label>
+                            <input type="date" id="date-initiated">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date-passed">Date Passed to Nomia</label>
+                            <input type="date" id="date-passed">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="quote-sent-date">Quote Sent Date</label>
+                            <input type="date" id="quote-sent-date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edits-date">Customer Requested Edits Date</label>
+                            <input type="date" id="edits-date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expiration-date">Current Expiration Date</label>
+                            <input type="date" id="expiration-date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="renewal-start">Renewal Start Date</label>
+                            <input type="date" id="renewal-start">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="renewal-end">Renewal End Date</label>
+                            <input type="date" id="renewal-end">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="manufacturer">OEM / Manufacturer</label>
+                            <input type="text" id="manufacturer">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="manual-platform">Manual or Platform</label>
+                            <select id="manual-platform">
+                                <option value="">Select</option>
+                                <option value="Manual">Manual</option>
+                                <option value="Platform">Platform</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="saas-onprem">SaaS or On-Prem Terms</label>
+                            <select id="saas-onprem">
+                                <option value="">Select</option>
+                                <option value="SaaS">SaaS</option>
+                                <option value="On-Premise">On-Premise</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="N/A">N/A</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="msa-issued">MSA Issued Date</label>
+                            <input type="date" id="msa-issued">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="msa-status">MSA Status</label>
+                            <select id="msa-status">
+                                <option value="">Select</option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Approved">Approved</option>
+                                <option value="N/A">N/A</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="po-tpv">PO on TPV?</label>
+                            <select id="po-tpv">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="current-msa">Current MSA in Place?</label>
+                            <select id="current-msa">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="existing-contract">Existing Contract</label>
+                            <input type="text" id="existing-contract">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="requestor-name">Requestor Name</label>
+                            <input type="text" id="requestor-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="requestor-email">Requestor Email</label>
+                            <input type="email" id="requestor-email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="procurement-contact">Procurement Contact</label>
+                            <input type="text" id="procurement-contact">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stakeholder-name">Stakeholder Name</label>
+                            <input type="text" id="stakeholder-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stakeholder-email">Stakeholder Email</label>
+                            <input type="email" id="stakeholder-email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="vendor-name">Vendor Name</label>
+                            <input type="text" id="vendor-name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supplier-email">Supplier Contact Email</label>
+                            <input type="email" id="supplier-email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="onboarding-status">Onboarding Status</label>
+                            <select id="onboarding-status">
+                                <option value="">Select</option>
+                                <option value="Not Started">Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="N/A">N/A</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="payment-terms">Payment Terms</label>
+                            <input type="text" id="payment-terms">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supplier-req">Supplier REQ From</label>
+                            <select id="supplier-req">
+                                <option value="">Select</option>
+                                <option value="Softools">Softools</option>
+                                <option value="Nomia">Nomia</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="new-vendor">New Vendor?</label>
+                            <select id="new-vendor">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="previous-price">Previous Price</label>
+                            <input type="text" id="previous-price">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="delivery-address">Delivery Address</label>
+                            <input type="text" id="delivery-address">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buying-status">Buying Status</label>
+                            <input type="text" id="buying-status">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sla-days">SLA Days</label>
+                            <input type="number" id="sla-days">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1 1 100%;">
+                            <label for="sla-suspension">SLA Suspension Reason</label>
+                            <input type="text" id="sla-suspension">
+                        </div>
+                    </div>
+                    
+                    <div class="btn-row">
+                        <button type="button" id="search-btn" class="btn btn-secondary">Search</button>
+                        <button type="submit" id="enter-btn" class="btn btn-primary">Enter</button>
+                        <button type="button" id="edit-btn" class="btn btn-secondary">Edit</button>
+                        <button type="button" id="clear-btn" class="btn btn-danger">Clear</button>
+                    </div>
+                    <div id="excel-update-reminder" style="text-align: right; margin-top: 10px; font-size: 12px; color: #666; display: none;">
+                        Remember to download the updated Excel file after making changes.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">Buyer:</span>
+                    <select id="filter-buyer" class="filter-select">
+                        <option value="">All Buyers</option>
+                        <!-- <option value="Smith, John">Smith, John</option>
+                        <option value="Johnson, Lisa">Johnson, Lisa</option>
+                        <option value="Williams, Robert">Williams, Robert</option>
+                        <option value="Brown, Sarah">Brown, Sarah</option> -->
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Stage:</span>
+                    <select id="filter-stage" class="filter-select">
+                        <option value="">All Stages</option>
+                        <option value="New Request">New Request</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Awaiting Info">Awaiting Info</option>
+                        <option value="Vendor Negotiation">Vendor Negotiation</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Priority:</span>
+                    <select id="filter-priority" class="filter-select">
+                        <option value="">All Priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Vendor:</span>
+                    <select id="filter-vendor" class="filter-select">
+                        <option value="">All Vendors</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>RFQ#</th>
+                            <th>Project Title</th>
+                            <th>Buyer</th>
+                            <th>Priority</th>
+                            <th>Stage (Merck)</th>
+                            <th>Stage (Nomia)</th>
+                            <th>Vendor</th>
+                            <th>Action With</th>
+                            <th>Latest Update</th>
+                            <th>Expiration Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample data -->
+                        <tr>
+                            <td>RFQ-2025-001</td>
+                            <td>Laboratory Equipment Renewal</td>
+                            <td>Smith, John</td>
+                            <td><span class="badge badge-danger">High</span></td>
+                            <td>In Progress</td>
+                            <td>Quote Preparation</td>
+                            <td>Lab Supplies Inc.</td>
+                            <td>Nomia</td>
+                            <td>22 Mar Sent email to Supplier with onboarding instructions</td>
+                            <td>30-Apr-25</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm edit-record">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Records Tab -->
+        <div id="records-tab" class="tab-content">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">RFQ#:</span>
+                    <input type="text" id="filter-rfq" class="filter-select">
+                </div>
+                
+                <div class="filter-group">
+                    <span class="filter-label">Date Range:</span>
+                    <input type="date" id="filter-date-from" class="filter-select">
+                    <span>to</span>
+                    <input type="date" id="filter-date-to" class="filter-select">
+                </div>
+                
+                <button id="apply-filter" class="btn btn-primary">Apply Filter</button>
+                <button id="clear-filter" class="btn btn-secondary">Clear</button>
+            </div>
+            
+            <div class="table-container">
+                <table id="records-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>RFQ#</th>
+                            <th>Project Title</th>
+                            <th>Action Type</th>
+                            <th>User</th>
+                            <th>Update Details</th>
+                            <th>Stage (Merck)</th>
+                            <th>Stage (Nomia)</th>
+                            <th>Action With</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample data -->
+                        <tr>
+                            <td>22-Mar-25 09:15</td>
+                            <td>RFQ-2025-001</td>
+                            <td>Laboratory Equipment Renewal</td>
+                            <td>Update</td>
+                            <td>Enrique</td>
+                            <td>Sent email to Supplier with onboarding instructions</td>
+                            <td>In Progress</td>
+                            <td>Quote Preparation</td>
+                            <td>Nomia</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for application functionality -->
+    <!-- JavaScript for application functionality -->
+    <script>
+        // DOM Elements
+        const navLinks = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const rfqForm = document.getElementById('rfq-form');
+        const searchBtn = document.getElementById('search-btn');
+        const enterBtn = document.getElementById('enter-btn');
+        const editBtn = document.getElementById('edit-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const alertSuccess = document.getElementById('alert-success');
+        const alertError = document.getElementById('alert-error');
+        const dashboardTable = document.getElementById('dashboard-table');
+        const recordsTable = document.getElementById('records-table');
+        const filterBuyer = document.getElementById('filter-buyer');
+        const filterStage = document.getElementById('filter-stage');
+        const filterPriority = document.getElementById('filter-priority');
+        const filterVendor = document.getElementById('filter-vendor');
+        const applyFilterBtn = document.getElementById('apply-filter');
+        const clearFilterBtn = document.getElementById('clear-filter');
+        const excelFileInput = document.getElementById('excel-file');
+        const downloadExcelBtn = document.getElementById('download-excel');
+        const excelStatusDiv = document.getElementById('excel-status');
+        const excelStatusMessage = document.getElementById('excel-status-message');
+        const excelUpdateReminder = document.getElementById('excel-update-reminder');
+        
+        // In-memory database (would be replaced with real backend)
+        let rfqDatabase = [
+            {
+                rfqNumber: 'RFQ-2025-001',
+                projectTitle: 'Laboratory Equipment Renewal',
+                buyer: 'Smith, John',
+                category: 'Hardware',
+                priority: 'High',
+                stageMerck: 'In Progress',
+                stageNomia: 'Quote Preparation',
+                buyerStatus: 'Awaiting quote',
+                actionWith: 'Nomia',
+                briefUpdate: '22 Mar Sent email to Supplier with onboarding instructions',
+                managerComments: 'Need to expedite this one',
+                dateInitiated: '2025-03-15',
+                datePassed: '2025-03-16',
+                quoteSentDate: '',
+                editsDate: '',
+                expirationDate: '2025-04-30',
+                renewalStart: '2025-05-01',
+                renewalEnd: '2026-04-30',
+                manufacturer: 'Lab Supplies Inc.',
+                manualPlatform: 'Manual',
+                saasOnprem: 'N/A',
+                msaIssued: '',
+                msaStatus: 'Not Started',
+                poTpv: 'No',
+                currentMsa: 'No',
+                existingContract: '',
+                requestorName: 'David Chen',
+                requestorEmail: 'david.chen@example.com',
+                procurementContact: 'Maria Rodriguez',
+                stakeholderName: 'James Wilson',
+                stakeholderEmail: 'james.wilson@example.com',
+                vendorName: 'Lab Supplies Inc.',
+                supplierEmail: 'sales@labsupplies.example.com',
+                onboardingStatus: 'In Progress',
+                paymentTerms: 'Net 30',
+                supplierReq: 'Nomia',
+                newVendor: 'Yes',
+                previousPrice: '',
+                deliveryAddress: '123 Science Park, Building A',
+                buyingStatus: 'Active',
+                slaDays: 21,
+                slaSuspension: ''
+            },
+            {
+                rfqNumber: 'RFQ-2025-002',
+                projectTitle: 'Software License Renewal',
+                buyer: 'Johnson, Lisa',
+                category: 'Software',
+                priority: 'Medium',
+                stageMerck: 'Awaiting Info',
+                stageNomia: 'Reviewing',
+                buyerStatus: 'Awaiting vendor response',
+                actionWith: 'Vendor',
+                briefUpdate: '20 Mar Requested additional information about license terms',
+                managerComments: '',
+                dateInitiated: '2025-03-20',
+                datePassed: '2025-03-20',
+                quoteSentDate: '',
+                editsDate: '',
+                expirationDate: '2025-05-15',
+                renewalStart: '2025-06-01',
+                renewalEnd: '2026-05-31',
+                manufacturer: 'Tech Solutions Co.',
+                manualPlatform: 'Platform',
+                saasOnprem: 'SaaS',
+                msaIssued: '',
+                msaStatus: 'Not Started',
+                poTpv: 'No',
+                currentMsa: 'No',
+                existingContract: 'SWL-2024-056',
+                requestorName: 'Emily Johnson',
+                requestorEmail: 'emily.johnson@example.com',
+                procurementContact: 'Thomas Brown',
+                stakeholderName: 'Michael Davis',
+                stakeholderEmail: 'michael.davis@example.com',
+                vendorName: 'Tech Solutions Co.',
+                supplierEmail: 'licensing@techsolutions.example.com',
+                onboardingStatus: 'Not Started',
+                paymentTerms: 'Net 45',
+                supplierReq: 'Softools',
+                newVendor: 'No',
+                previousPrice: '$45,000',
+                deliveryAddress: 'Digital Delivery',
+                buyingStatus: 'Active',
+                slaDays: 14,
+                slaSuspension: ''
+            },
+            {
+                rfqNumber: 'RFQ-2025-003',
+                projectTitle: 'Office Supplies Contract',
+                buyer: 'Williams, Robert',
+                category: 'Services',
+                priority: 'Low',
+                stageMerck: 'Completed',
+                stageNomia: 'Completed',
+                buyerStatus: 'Contract signed',
+                actionWith: 'Buyer',
+                briefUpdate: '18 Mar Contract finalized and sent to procurement',
+                managerComments: 'Good negotiation on terms',
+                dateInitiated: '2025-03-15',
+                datePassed: '2025-03-15',
+                quoteSentDate: '2025-03-16',
+                editsDate: '2025-03-17',
+                expirationDate: '2026-03-01',
+                renewalStart: '2025-03-20',
+                renewalEnd: '2026-03-19',
+                manufacturer: 'Office Depot',
+                manualPlatform: 'Platform',
+                saasOnprem: 'N/A',
+                msaIssued: '2025-03-18',
+                msaStatus: 'Approved',
+                poTpv: 'Yes',
+                currentMsa: 'Yes',
+                existingContract: '',
+                requestorName: 'Sarah Adams',
+                requestorEmail: 'sarah.adams@example.com',
+                procurementContact: 'Daniel Lopez',
+                stakeholderName: 'Jennifer Lee',
+                stakeholderEmail: 'jennifer.lee@example.com',
+                vendorName: 'Office Depot',
+                supplierEmail: 'corporate@officedepot.example.com',
+                onboardingStatus: 'Completed',
+                paymentTerms: 'Net 30',
+                supplierReq: 'Nomia',
+                newVendor: 'No',
+                previousPrice: '$12,500',
+                deliveryAddress: '456 Corporate Blvd, Suite 300',
+                buyingStatus: 'Completed',
+                slaDays: 5,
+                slaSuspension: ''
+            }
+        ];
+        
+        // Activity log (for the "All Records" tab)
+        let activityLog = [
+            {
+                timestamp: '22-Mar-25 09:15',
+                rfqNumber: 'RFQ-2025-001',
+                projectTitle: 'Laboratory Equipment Renewal',
+                actionType: 'Update',
+                user: 'Enrique',
+                updateDetails: 'Sent email to Supplier with onboarding instructions',
+                stageMerck: 'In Progress',
+                stageNomia: 'Quote Preparation',
+                actionWith: 'Nomia'
+            },
+            {
+                timestamp: '20-Mar-25 14:30',
+                rfqNumber: 'RFQ-2025-002',
+                projectTitle: 'Software License Renewal',
+                actionType: 'New Entry',
+                user: 'Enrique',
+                updateDetails: 'Created new RFQ for software license renewal',
+                stageMerck: 'New Request',
+                stageNomia: 'Reviewing',
+                actionWith: 'Buyer'
+            },
+            {
+                timestamp: '20-Mar-25 11:20',
+                rfqNumber: 'RFQ-2025-002',
+                projectTitle: 'Software License Renewal',
+                actionType: 'Update',
+                user: 'Enrique',
+                updateDetails: 'Requested additional information about license terms',
+                stageMerck: 'Awaiting Info',
+                stageNomia: 'Reviewing',
+                actionWith: 'Vendor'
+            },
+            {
+                timestamp: '18-Mar-25 16:45',
+                rfqNumber: 'RFQ-2025-003',
+                projectTitle: 'Office Supplies Contract',
+                actionType: 'Update',
+                user: 'Enrique',
+                updateDetails: 'Contract finalized and sent to procurement',
+                stageMerck: 'Completed',
+                stageNomia: 'Completed',
+                actionWith: 'Buyer'
+            },
+            {
+                timestamp: '15-Mar-25 10:00',
+                rfqNumber: 'RFQ-2025-003',
+                projectTitle: 'Office Supplies Contract',
+                actionType: 'New Entry',
+                user: 'Enrique',
+                updateDetails: 'Created new RFQ for office supplies contract',
+                stageMerck: 'New Request',
+                stageNomia: 'Requirements Gathering',
+                actionWith: 'Nomia'
+            }
+        ];
+        
+        // Excel integration variables
+        let originalWorkbook = null;
+        let originalFileName = '';
+        let rfqSheetName = '';
+        let activitySheetName = '';
+        let excelModified = false;
+        
+        // Tab navigation
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and tabs
+                navLinks.forEach(link => link.classList.remove('active'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Show corresponding tab
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Form actions
+        function showAlert(element, message, duration = 3000) {
+            element.textContent = message;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, duration);
+        }
+        
+        function clearForm() {
+            rfqForm.reset();
+        }
+        
+        function searchRFQ() {
+            const rfqNumber = document.getElementById('rfq-number').value;
+            
+            if (!rfqNumber) {
+                showAlert(alertError, 'Please enter an RFQ number to search.');
+                return;
+            }
+            
+            const foundRFQ = rfqDatabase.find(rfq => rfq.rfqNumber === rfqNumber);
+            
+            if (foundRFQ) {
+                // Populate form with RFQ data
+                document.getElementById('project-title').value = foundRFQ.projectTitle;
+                document.getElementById('buyer').value = foundRFQ.buyer;
+                document.getElementById('category').value = foundRFQ.category;
+                document.getElementById('priority').value = foundRFQ.priority;
+                document.getElementById('stage-merck').value = foundRFQ.stageMerck;
+                document.getElementById('stage-nomia').value = foundRFQ.stageNomia;
+                document.getElementById('buyer-status').value = foundRFQ.buyerStatus;
+                document.getElementById('action-with').value = foundRFQ.actionWith;
+                document.getElementById('brief-update').value = '';  // Clear for new update
+                document.getElementById('manager-comments').value = foundRFQ.managerComments;
+                document.getElementById('date-initiated').value = foundRFQ.dateInitiated;
+                document.getElementById('date-passed').value = foundRFQ.datePassed;
+                document.getElementById('quote-sent-date').value = foundRFQ.quoteSentDate;
+                document.getElementById('edits-date').value = foundRFQ.editsDate;
+                document.getElementById('expiration-date').value = foundRFQ.expirationDate;
+                document.getElementById('renewal-start').value = foundRFQ.renewalStart;
+                document.getElementById('renewal-end').value = foundRFQ.renewalEnd;
+                document.getElementById('manufacturer').value = foundRFQ.manufacturer;
+                document.getElementById('manual-platform').value = foundRFQ.manualPlatform;
+                document.getElementById('saas-onprem').value = foundRFQ.saasOnprem;
+                document.getElementById('msa-issued').value = foundRFQ.msaIssued;
+                document.getElementById('msa-status').value = foundRFQ.msaStatus;
+                document.getElementById('po-tpv').value = foundRFQ.poTpv;
+                document.getElementById('current-msa').value = foundRFQ.currentMsa;
+                document.getElementById('existing-contract').value = foundRFQ.existingContract;
+                document.getElementById('requestor-name').value = foundRFQ.requestorName;
+                document.getElementById('requestor-email').value = foundRFQ.requestorEmail;
+                document.getElementById('procurement-contact').value = foundRFQ.procurementContact;
+                document.getElementById('stakeholder-name').value = foundRFQ.stakeholderName;
+                document.getElementById('stakeholder-email').value = foundRFQ.stakeholderEmail;
+                document.getElementById('vendor-name').value = foundRFQ.vendorName;
+                document.getElementById('supplier-email').value = foundRFQ.supplierEmail;
+                document.getElementById('onboarding-status').value = foundRFQ.onboardingStatus;
+                document.getElementById('payment-terms').value = foundRFQ.paymentTerms;
+                document.getElementById('supplier-req').value = foundRFQ.supplierReq;
+                document.getElementById('new-vendor').value = foundRFQ.newVendor;
+                document.getElementById('previous-price').value = foundRFQ.previousPrice;
+                document.getElementById('delivery-address').value = foundRFQ.deliveryAddress;
+                document.getElementById('buying-status').value = foundRFQ.buyingStatus;
+                document.getElementById('sla-days').value = foundRFQ.slaDays;
+                document.getElementById('sla-suspension').value = foundRFQ.slaSuspension;
+                
+                showAlert(alertSuccess, 'RFQ found and form populated.');
+            } else {
+                showAlert(alertError, 'RFQ not found. You may enter new information.');
+            }
+        }
+        
+        function saveRFQ(event) {
+            event.preventDefault();
+            
+            const rfqNumber = document.getElementById('rfq-number').value;
+            const projectTitle = document.getElementById('project-title').value;
+            
+            if (!rfqNumber || !projectTitle) {
+                showAlert(alertError, 'RFQ# and Project Title are required.');
+                return;
+            }
+            
+            const today = new Date();
+            const formattedDate = `${today.getDate().toString().padStart(2, '0')}-${
+                ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][today.getMonth()]
+            }-${today.getFullYear().toString().substr(2)}`;
+            
+            const timeString = `${today.getHours().toString().padStart(2, '0')}:${
+                today.getMinutes().toString().padStart(2, '0')
+            }`;
+            
+            const timestampStr = `${formattedDate} ${timeString}`;
+            
+            // Create RFQ object from form
+            const rfqData = {
+                rfqNumber: rfqNumber,
+                projectTitle: projectTitle,
+                buyer: document.getElementById('buyer').value,
+                category: document.getElementById('category').value,
+                priority: document.getElementById('priority').value,
+                stageMerck: document.getElementById('stage-merck').value,
+                stageNomia: document.getElementById('stage-nomia').value,
+                buyerStatus: document.getElementById('buyer-status').value,
+                actionWith: document.getElementById('action-with').value,
+                briefUpdate: document.getElementById('brief-update').value,
+                managerComments: document.getElementById('manager-comments').value,
+                dateInitiated: document.getElementById('date-initiated').value,
+                datePassed: document.getElementById('date-passed').value,
+                quoteSentDate: document.getElementById('quote-sent-date').value,
+                editsDate: document.getElementById('edits-date').value,
+                expirationDate: document.getElementById('expiration-date').value,
+                renewalStart: document.getElementById('renewal-start').value,
+                renewalEnd: document.getElementById('renewal-end').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                manualPlatform: document.getElementById('manual-platform').value,
+                saasOnprem: document.getElementById('saas-onprem').value,
+                msaIssued: document.getElementById('msa-issued').value,
+                msaStatus: document.getElementById('msa-status').value,
+                poTpv: document.getElementById('po-tpv').value,
+                currentMsa: document.getElementById('current-msa').value,
+                existingContract: document.getElementById('existing-contract').value,
+                requestorName: document.getElementById('requestor-name').value,
+                requestorEmail: document.getElementById('requestor-email').value,
+                procurementContact: document.getElementById('procurement-contact').value,
+                stakeholderName: document.getElementById('stakeholder-name').value,
+                stakeholderEmail: document.getElementById('stakeholder-email').value,
+                vendorName: document.getElementById('vendor-name').value,
+                supplierEmail: document.getElementById('supplier-email').value,
+                onboardingStatus: document.getElementById('onboarding-status').value,
+                paymentTerms: document.getElementById('payment-terms').value,
+                supplierReq: document.getElementById('supplier-req').value,
+                newVendor: document.getElementById('new-vendor').value,
+                previousPrice: document.getElementById('previous-price').value,
+                deliveryAddress: document.getElementById('delivery-address').value,
+                buyingStatus: document.getElementById('buying-status').value,
+                slaDays: document.getElementById('sla-days').value,
+                slaSuspension: document.getElementById('sla-suspension').value
+            };
+            
+            const briefUpdate = document.getElementById('brief-update').value;
+            
+            // Check if RFQ exists
+            const existingIndex = rfqDatabase.findIndex(rfq => rfq.rfqNumber === rfqNumber);
+            
+            if (existingIndex !== -1) {
+                // Update existing RFQ
+                rfqDatabase[existingIndex] = rfqData;
+                
+                // Format the update with date
+                const formattedUpdate = briefUpdate ? `${formattedDate.slice(0, 6)} ${briefUpdate}` : '';
+                if (formattedUpdate) {
+                    rfqDatabase[existingIndex].briefUpdate = formattedUpdate;
+                }
+                
+                showAlert(alertSuccess, 'RFQ updated successfully');
+            } else {
+                // Add new RFQ
+                // Format the update with date
+                const formattedUpdate = briefUpdate ? `${formattedDate.slice(0, 6)} ${briefUpdate}` : '';
+                if (formattedUpdate) {
+                    rfqData.briefUpdate = formattedUpdate;
+                }
+                
+                rfqDatabase.push(rfqData);
+                showAlert(alertSuccess, 'New RFQ created successfully');
+            }
+            
+            // Add to activity log
+            if (briefUpdate) {
+                const logEntry = {
+                    timestamp: timestampStr,
+                    rfqNumber: rfqNumber,
+                    projectTitle: projectTitle,
+                    actionType: existingIndex !== -1 ? 'Update' : 'New Entry',
+                    user: document.getElementById('current-user').textContent,
+                    updateDetails: briefUpdate,
+                    stageMerck: document.getElementById('stage-merck').value,
+                    stageNomia: document.getElementById('stage-nomia').value,
+                    actionWith: document.getElementById('action-with').value
+                };
+                
+                activityLog.unshift(logEntry);
+            }
+            
+            // Update Excel status if a file is loaded
+            if (originalWorkbook) {
+                excelModified = true;
+                excelUpdateReminder.style.display = 'block';
+                
+                // Update status message to show changes are pending
+                const currentStatus = excelStatusMessage.innerHTML;
+                if (!currentStatus.includes('Changes pending')) {
+                    excelStatusMessage.innerHTML = `
+                        <span style="color: #ff9800;">⚠</span> Changes pending for: <strong>${originalFileName}</strong><br>
+                        <span style="font-size: 12px;">Please download the updated Excel file to save your changes</span>
+                    `;
+                }
+            }
+            
+            // Refresh dashboard
+            refreshDashboard();
+            
+            // Refresh records
+            refreshRecords();
+            
+            // Clear form
+            clearForm();
+        }
+        
+        function refreshDashboard() {
+            const tableBody = dashboardTable.querySelector('tbody');
+            tableBody.innerHTML = '';
+            
+            const buyerFilter = filterBuyer.value;
+            const stageFilter = filterStage.value;
+            const priorityFilter = filterPriority.value;
+            const vendorFilter = filterVendor.value;
+            
+            // Filter the database
+            let filteredData = rfqDatabase;
+            
+            if (buyerFilter) {
+                filteredData = filteredData.filter(rfq => rfq.buyer === buyerFilter);
+            }
+            
+            if (stageFilter) {
+                filteredData = filteredData.filter(rfq => rfq.stageMerck === stageFilter || rfq.stageNomia === stageFilter);
+            }
+            
+            if (priorityFilter) {
+                filteredData = filteredData.filter(rfq => rfq.priority === priorityFilter);
+            }
+            
+            if (vendorFilter) {
+                filteredData = filteredData.filter(rfq => rfq.vendorName === vendorFilter);
+            }
+            
+            // Sort by newest first (assuming RFQ numbers are sequential)
+            filteredData.sort((a, b) => b.rfqNumber.localeCompare(a.rfqNumber));
+            
+            filteredData.forEach(rfq => {
+                const row = document.createElement('tr');
+                
+                const priorityClass = rfq.priority === 'High' ? 'badge-danger' : 
+                                      rfq.priority === 'Medium' ? 'badge-warning' : 'badge-success';
+                
+                row.innerHTML = `
+                    <td>${rfq.rfqNumber}</td>
+                    <td>${rfq.projectTitle}</td>
+                    <td>${rfq.buyer}</td>
+                    <td><span class="badge ${priorityClass}">${rfq.priority}</span></td>
+                    <td>${rfq.stageMerck}</td>
+                    <td>${rfq.stageNomia}</td>
+                    <td>${rfq.vendorName}</td>
+                    <td>${rfq.actionWith}</td>
+                    <td>${rfq.briefUpdate}</td>
+                    <td>${formatDate(rfq.expirationDate)}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm edit-record" data-rfq="${rfq.rfqNumber}">Edit</button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners to Edit buttons
+            document.querySelectorAll('.edit-record').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const rfqNumber = this.getAttribute('data-rfq');
+                    document.getElementById('rfq-number').value = rfqNumber;
+                    
+                    // Switch to Input tab
+                    document.querySelector('[data-tab="input-tab"]').click();
+                    
+                    // Search for this RFQ
+                    searchRFQ();
+                });
+            });
+        }
+        
+        function refreshRecords() {
+            const tableBody = recordsTable.querySelector('tbody');
+            tableBody.innerHTML = '';
+            
+            // Sort by newest first
+            activityLog.sort((a, b) => {
+                const dateA = new Date(a.timestamp.replace(/-/g, ' '));
+                const dateB = new Date(b.timestamp.replace(/-/g, ' '));
+                return dateB - dateA;
+            });
+            
+            activityLog.forEach(log => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${log.timestamp}</td>
+                    <td>${log.rfqNumber}</td>
+                    <td>${log.projectTitle}</td>
+                    <td>${log.actionType}</td>
+                    <td>${log.user}</td>
+                    <td>${log.updateDetails}</td>
+                    <td>${log.stageMerck}</td>
+                    <td>${log.stageNomia}</td>
+                    <td>${log.actionWith}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+            const year = date.getFullYear().toString().substr(2);
+            
+            return `${day}-${month}-${year}`;
+        }
+        
+        // Excel functionality
+        
+        // Function to handle Excel file upload
+        excelFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (!file) {
+                excelStatusDiv.style.display = 'none';
+                downloadExcelBtn.disabled = true;
+                return;
+            }
+            
+            excelStatusDiv.style.display = 'block';
+            excelStatusMessage.textContent = 'Reading file...';
+            
+            // Store the original file name
+            originalFileName = file.name;
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    
+                    // Store the original workbook for later
+                    originalWorkbook = XLSX.read(data, { type: 'array', bookVBA: true });
+                    
+                    // Determine which sheet contains the RFQ data
+                    rfqSheetName = findSheetWithColumns(originalWorkbook, ['RFQ#', 'Project Title', 'Buyer']);
+                    
+                    if (!rfqSheetName) {
+                        // If we can't find a matching sheet, default to the first sheet
+                        rfqSheetName = originalWorkbook.SheetNames[0];
+                    }
+                    
+                    // Find the activity log sheet if it exists
+                    activitySheetName = findSheetWithColumns(originalWorkbook, ['Timestamp', 'Action Type', 'Update Details']);
+                    
+                    // Extract RFQ data
+                    const rfqWorksheet = originalWorkbook.Sheets[rfqSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(rfqWorksheet);
+                    
+                    // Map Excel columns to our database structure
+                    rfqDatabase = jsonData.map(row => {
+                        return {
+                            rfqNumber: row['RFQ#'] || '',
+                            projectTitle: row['Project Title'] || '',
+                            buyer: row['Buyer'] || '',
+                            category: row['Category'] || '',
+                            priority: row['Priority'] || '',
+                            stageMerck: row['Stage (Merck)'] || '',
+                            stageNomia: row['Stage (Nomia)'] || '',
+                            buyerStatus: row['Buyer Latest Status'] || '',
+                            actionWith: row['Action With'] || '',
+                            briefUpdate: row['Brief Update'] || '',
+                            managerComments: row['Manager Comments'] || '',
+                            dateInitiated: formatExcelDate(row['Date Initiated']),
+                            datePassed: formatExcelDate(row['Date Passed to Nomia']),
+                            quoteSentDate: formatExcelDate(row['Quote Sent Date']),
+                            editsDate: formatExcelDate(row['Customer Requested Edits Date']),
+                            expirationDate: formatExcelDate(row['Current Expiration Date']),
+                            renewalStart: formatExcelDate(row['Renewal Start Date']),
+                            renewalEnd: formatExcelDate(row['Renewal End Date']),
+                            manufacturer: row['OEM / Manufacturer'] || '',
+                            manualPlatform: row['Manual or Platform'] || '',
+                            saasOnprem: row['SaaS or On-Prem Terms'] || '',
+                            msaIssued: formatExcelDate(row['MSA Issued Date']),
+                            msaStatus: row['MSA Status'] || '',
+                            poTpv: row['PO on TPV?'] || '',
+                            currentMsa: row['Current MSA in Place?'] || '',
+                            existingContract: row['Existing Contract'] || '',
+                            requestorName: row['Requestor Name'] || '',
+                            requestorEmail: row['Requestor Email'] || '',
+                            procurementContact: row['Procurement Contact'] || '',
+                            stakeholderName: row['Stakeholder Name'] || '',
+                            stakeholderEmail: row['Stakeholder Email'] || '',
+                            vendorName: row['Vendor Name'] || '',
+                            supplierEmail: row['Supplier Contact Email'] || '',
+                            onboardingStatus: row['Onboarding Status'] || '',
+                            paymentTerms: row['Payment Terms'] || '',
+                            supplierReq: row['Supplier REQ From'] || '',
+                            newVendor: row['New Vendor?'] || '',
+                            previousPrice: row['Previous Price'] || '',
+                            deliveryAddress: row['Delivery Address'] || '',
+                            buyingStatus: row['Buying Status'] || '',
+                            slaDays: row['SLA Days'] || '',
+                            slaSuspension: row['SLA Suspension Reason'] || ''
+                        };
+                    });
+                    
+                    // Extract activity log if it exists
+                    if (activitySheetName) {
+                        const activityWorksheet = originalWorkbook.Sheets[activitySheetName];
+                        const activityData = XLSX.utils.sheet_to_json(activityWorksheet);
+                        
+                        activityLog = activityData.map(row => {
+                            return {
+                                timestamp: row['Timestamp'] || '',
+                                rfqNumber: row['RFQ#'] || '',
+                                projectTitle: row['Project Title'] || '',
+                                actionType: row['Action Type'] || '',
+                                user: row['User'] || '',
+                                updateDetails: row['Update Details'] || '',
+                                stageMerck: row['Stage (Merck)'] || '',
+                                stageNomia: row['Stage (Nomia)'] || '',
+                                actionWith: row['Action With'] || ''
+                            };
+                        });
+                    }
+                    
+                    // Enable the download button now that we have an Excel file
+                    downloadExcelBtn.disabled = false;
+                    
+                    // Update status message
+                    excelStatusMessage.innerHTML = `
+                        <span style="color: #4caf50;">✓</span> File loaded: <strong>${originalFileName}</strong><br>
+                        <span style="font-size: 12px;">RFQ data from sheet: ${rfqSheetName} (${jsonData.length} records)</span>
+                    `;
+                    
+                    excelModified = false;
+                    excelUpdateReminder.style.display = 'none';
+                    
+                    // Refresh views
+                    refreshDashboard();
+                    refreshRecords();
+                    populateVendorFilter();
+                    populateBuyerFilter();
+                    showAlert(alertSuccess, `Imported ${rfqDatabase.length} RFQ records from Excel!`);
+                    
+                } catch (error) {
+                    console.error('Error processing Excel file:', error);
+                    excelStatusMessage.innerHTML = `
+                        <span style="color: #f44336;">✗</span> Error reading file: ${error.message}
+                    `;
+                    downloadExcelBtn.disabled = true;
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        });
+        
+        // Helper function to find a sheet with specific columns
+        function findSheetWithColumns(workbook, columnNames) {
+            for (const sheetName of workbook.SheetNames) {
+                const worksheet = workbook.Sheets[sheetName];
+                const headerRow = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
+                
+                // Check if all required columns exist in this sheet
+                const hasAllColumns = columnNames.every(col => headerRow.includes(col));
+                
+                if (hasAllColumns) {
+                    return sheetName;
+                }
+            }
+            return null;
+        }
+        
+        // Convert Excel date serial number to YYYY-MM-DD format if needed
+        function formatExcelDate(excelDate) {
+            if (!excelDate) return '';
+            
+            if (typeof excelDate === 'string') {
+                const dateMatch = excelDate.match(/(\d{1,4})[/-](\d{1,2})[/-](\d{1,4})/);
+                if (dateMatch) {
+                    let year, month, day;
+                    if (dateMatch[1].length === 4) {
+                        year = dateMatch[1];
+                        month = dateMatch[2];
+                        day = dateMatch[3];
+                    } else if (dateMatch[3].length === 4) {
+                        day = dateMatch[1];
+                        month = dateMatch[2];
+                        year = dateMatch[3];
+                    } else {
+                        month = dateMatch[1];
+                        day = dateMatch[2];
+                        year = dateMatch[3];
+                    }
+                    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                }
+                return excelDate;
+            }
+            
+            if (typeof excelDate === 'number') {
+                const excelEpoch = new Date(1899, 11, 30);
+                const millisecondsPerDay = 24 * 60 * 60 * 1000;
+                const date = new Date(excelEpoch.getTime() + excelDate * millisecondsPerDay);
+                
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                
+                return `${year}-${month}-${day}`;
+            }
+            
+            return '';
+        }
+        
+        // Function to download the updated Excel file
+        downloadExcelBtn.addEventListener('click', function() {
+            if (!originalWorkbook) {
+                showAlert(alertError, 'Please upload an Excel file first!');
+                return;
+            }
+            
+            try {
+                // Create a copy of the original workbook
+                const updatedWorkbook = XLSX.utils.book_new();
+                
+                // Copy all sheets and properties from original workbook
+                originalWorkbook.SheetNames.forEach(name => {
+                    // If this is the RFQ data sheet, update it with current data
+                    if (name === rfqSheetName) {
+                        // Convert RFQ database to Excel format
+                        const updatedRfqData = rfqDatabase.map(rfq => {
+                            return {
+                                'RFQ#': rfq.rfqNumber,
+                                'Project Title': rfq.projectTitle,
+                                'Buyer': rfq.buyer,
+                                'Category': rfq.category,
+                                'Priority': rfq.priority,
+                                'Stage (Merck)': rfq.stageMerck,
+                                'Stage (Nomia)': rfq.stageNomia,
+                                'Buyer Latest Status': rfq.buyerStatus,
+                                'Action With': rfq.actionWith,
+                                'Brief Update': rfq.briefUpdate,
+                                'Manager Comments': rfq.managerComments,
+                                'Date Initiated': rfq.dateInitiated,
+                                'Date Passed to Nomia': rfq.datePassed,
+                                'Quote Sent Date': rfq.quoteSentDate,
+                                'Customer Requested Edits Date': rfq.editsDate,
+                                'Current Expiration Date': rfq.expirationDate,
+                                'Renewal Start Date': rfq.renewalStart,
+                                'Renewal End Date': rfq.renewalEnd,
+                                'OEM / Manufacturer': rfq.manufacturer,
+                                'Manual or Platform': rfq.manualPlatform,
+                                'SaaS or On-Prem Terms': rfq.saasOnprem,
+                                'MSA Issued Date': rfq.msaIssued,
+                                'MSA Status': rfq.msaStatus,
+                                'PO on TPV?': rfq.poTpv,
+                                'Current MSA in Place?': rfq.currentMsa,
+                                'Existing Contract': rfq.existingContract,
+                                'Requestor Name': rfq.requestorName,
+                                'Requestor Email': rfq.requestorEmail,
+                                'Procurement Contact': rfq.procurementContact,
+                                'Stakeholder Name': rfq.stakeholderName,
+                                'Stakeholder Email': rfq.stakeholderEmail,
+                                'Vendor Name': rfq.vendorName,
+                                'Supplier Contact Email': rfq.supplierEmail,
+                                'Onboarding Status': rfq.onboardingStatus,
+                                'Payment Terms': rfq.paymentTerms,
+                                'Supplier REQ From': rfq.supplierReq,
+                                'New Vendor?': rfq.newVendor,
+                                'Previous Price': rfq.previousPrice,
+                                'Delivery Address': rfq.deliveryAddress,
+                                'Buying Status': rfq.buyingStatus,
+                                'SLA Days': rfq.slaDays,
+                                'SLA Suspension Reason': rfq.slaSuspension
+                            };
+                        });
+                        
+                        // Create updated worksheet
+                        const updatedWorksheet = XLSX.utils.json_to_sheet(updatedRfqData);
+                        XLSX.utils.book_append_sheet(updatedWorkbook, updatedWorksheet, name);
+                    } 
+                    // If this is the activity log sheet, update it
+                    else if (name === activitySheetName && activitySheetName) {
+                        // Convert activity log to Excel format
+                        const updatedActivityData = activityLog.map(log => {
+                            return {
+                                'Timestamp': log.timestamp,
+                                'RFQ#': log.rfqNumber,
+                                'Project Title': log.projectTitle,
+                                'Action Type': log.actionType,
+                                'User': log.user,
+                                'Update Details': log.updateDetails,
+                                'Stage (Merck)': log.stageMerck,
+                                'Stage (Nomia)': log.stageNomia,
+                                'Action With': log.actionWith
+                            };
+                        });
+                        
+                        // Create updated worksheet
+                        const updatedWorksheet = XLSX.utils.json_to_sheet(updatedActivityData);
+                        XLSX.utils.book_append_sheet(updatedWorkbook, updatedWorksheet, name);
+                    }
+                    // Otherwise, copy the sheet as is
+                    else {
+                        const clonedSheet = cloneSheet(originalWorkbook.Sheets[name]);
+                        XLSX.utils.book_append_sheet(updatedWorkbook, clonedSheet, name);
+                    }
+                });
+                
+                // Create activity log sheet if it doesn't exist
+                if (!activitySheetName && activityLog.length > 0) {
+                    const activityData = activityLog.map(log => {
+                        return {
+                            'Timestamp': log.timestamp,
+                            'RFQ#': log.rfqNumber,
+                            'Project Title': log.projectTitle,
+                            'Action Type': log.actionType,
+                            'User': log.user,
+                            'Update Details': log.updateDetails,
+                            'Stage (Merck)': log.stageMerck,
+                            'Stage (Nomia)': log.stageNomia,
+                            'Action With': log.actionWith
+                        };
+                    });
+                    
+                    const activityWorksheet = XLSX.utils.json_to_sheet(activityData);
+                    XLSX.utils.book_append_sheet(updatedWorkbook, activityWorksheet, "Activity Log");
+                }
+                
+                // Copy workbook properties and custom properties
+                if (originalWorkbook.Props) updatedWorkbook.Props = originalWorkbook.Props;
+                if (originalWorkbook.Custprops) updatedWorkbook.Custprops = originalWorkbook.Custprops;
+                
+                // Generate the filename with "Updated" to distinguish from original
+                let downloadName = originalFileName;
+                if (downloadName.includes('.')) {
+                    const parts = downloadName.split('.');
+                    const ext = parts.pop();
+                    downloadName = parts.join('.') + '_Updated.' + ext;
+                } else {
+                    downloadName += '_Updated.xlsx';
+                }
+                
+                // Write file
+                XLSX.writeFile(updatedWorkbook, downloadName);
+                
+                // Update status
+                excelStatusMessage.innerHTML = `
+                    <span style="color: #4caf50;">✓</span> File updated: <strong>${downloadName}</strong><br>
+                    <span style="font-size: 12px;">Last downloaded: ${new Date().toLocaleTimeString()}</span>
+                `;
+                
+                excelModified = false;
+                excelUpdateReminder.style.display = 'none';
+                
+                showAlert(alertSuccess, 'Excel file updated and downloaded successfully!');
+            } catch (error) {
+                console.error('Error updating Excel file:', error);
+                showAlert(alertError, 'Error updating Excel file: ' + error.message);
+            }
+        });
+        
+        // Helper function to clone a worksheet
+        function cloneSheet(worksheet) {
+            // Create a deep copy of the worksheet
+            return JSON.parse(JSON.stringify(worksheet));
+        }
+        
+        // Populate vendor filter dropdown
+        function populateVendorFilter() {
+            const vendors = [...new Set(rfqDatabase.map(rfq => rfq.vendorName).filter(Boolean))];
+            const vendorSelect = document.getElementById('filter-vendor');
+            
+            // Clear existing options except the first one
+            while (vendorSelect.options.length > 1) {
+                vendorSelect.remove(1);
+            }
+            
+            vendors.forEach(vendor => {
+                const option = document.createElement('option');
+                option.value = vendor;
+                option.textContent = vendor;
+                vendorSelect.appendChild(option);
+            });
+        }
+
+        //  Populate vendor filter dropdown
+         function populateBuyerFilter() {
+            const buyers = [...new Set(rfqDatabase.map(rfq => rfq.buyer).filter(Boolean))];
+            const buyerSelect = document.getElementById('filter-buyer');
+            
+            // Clear existing options except the first one
+            while (buyerSelect.options.length > 1) {
+                buyerSelect.remove(1);
+            }
+            
+            buyers.forEach(buyer => {
+                const option = document.createElement('option');
+                option.value = buyer;
+                option.textContent = buyer;
+                buyerSelect.appendChild(option);
+            });
+        }
+        
+        // Event listeners
+        searchBtn.addEventListener('click', searchRFQ);
+        rfqForm.addEventListener('submit', saveRFQ);
+        editBtn.addEventListener('click', searchRFQ);
+        clearBtn.addEventListener('click', clearForm);
+        
+        applyFilterBtn.addEventListener('click', function() {
+            refreshDashboard();
+        });
+        
+        clearFilterBtn.addEventListener('click', function() {
+            filterBuyer.value = '';
+            filterStage.value = '';
+            filterPriority.value = '';
+            filterVendor.value = '';
+            refreshDashboard();
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Excel section
+            downloadExcelBtn.disabled = true;
+            excelStatusDiv.style.display = 'none';
+            excelUpdateReminder.style.display = 'none';
+            
+            refreshDashboard();
+            refreshRecords();
+            populateVendorFilter();
+        });
+         // Function to handle Excel file upload
+         excelFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (!file) {
+                excelStatusDiv.style.display = 'none';
+                downloadExcelBtn.disabled = true;
+                return;
+            }
+            
+            excelStatusDiv.style.display = 'block';
+            excelStatusMessage.textContent = 'Reading file...';
+            
+            // Store the original file name
+            originalFileName = file.name;
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    
+                    // Store the original workbook for later
+                    originalWorkbook = XLSX.read(data, { type: 'array', bookVBA: true });
+                    
+                    // Log sheet names for debugging
+                    console.log("Available sheets:", originalWorkbook.SheetNames);
+                    
+                    // Determine which sheet contains the RFQ data - look for RFQ# column
+                    rfqSheetName = findSheetWithColumn(originalWorkbook, 'RFQ#');
+                    
+                    if (!rfqSheetName) {
+                        // If we can't find a matching sheet with RFQ#, try other potential headers
+                        rfqSheetName = findSheetWithColumn(originalWorkbook, 'Project Title');
+                        
+                        if (!rfqSheetName) {
+                            // If still not found, default to the first sheet
+                            rfqSheetName = originalWorkbook.SheetNames[0];
+                        }
+                    }
+                    
+                    console.log("Using sheet for RFQ data:", rfqSheetName);
+                    
+                    // Extract RFQ data
+                    const rfqWorksheet = originalWorkbook.Sheets[rfqSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(rfqWorksheet);
+                    
+                    console.log("Sheet headers:", Object.keys(jsonData[0] || {}));
+                    console.log("Sample data:", jsonData[0]);
+                    
+                    // Map Excel columns to our database structure with flexible column mapping
+                    rfqDatabase = jsonData.map(row => {
+                        // Create mapping for column name variations
+                        const mapData = {
+                            rfqNumber: row['RFQ#'] || '',
+                            projectTitle: row['Project Title'] || '',
+                            buyer: row['Buyer'] || '',
+                            category: row['Category'] || row['Category L1'] || '',
+                            priority: row['Priority'] || '',
+                            stageMerck: row['Stage (Merck)'] || '',
+                            stageNomia: row['Stage (Nomia)'] || '',
+                            buyerStatus: row['Buyer Latest Status'] || '',
+                            actionWith: row['Action with'] || '',
+                            briefUpdate: row['Brief update'] || '',
+                            managerComments: row['Mgrs comments'] || '',
+                            dateInitiated: formatExcelDate(row['Date initiated platform']),
+                            datePassed: formatExcelDate(row['Date passed to Nomia']),
+                            quoteSentDate: formatExcelDate(row['Quote Date']),
+                            editsDate: '', // Map if exists in your Excel
+                            expirationDate: formatExcelDate(row['Current expiration date']),
+                            renewalStart: formatExcelDate(row['Renewal Start Date']),
+                            renewalEnd: formatExcelDate(row['Renewal End date']),
+                            manufacturer: row['OEM / Manufacturer'] || '',
+                            manualPlatform: row['Manual or Platform'] || '',
+                            saasOnprem: row['Saas Or On-Prem Terms'] || '',
+                            msaIssued: formatExcelDate(row['MSA issued to supplier Date (#/Month/Year']),
+                            msaStatus: row['MSA Status'] || '',
+                            poTpv: row['Are we able to place PO on TPV'] || '',
+                            currentMsa: row['Current MSA in place Merck/Supplier (Yes / No)'] || '',
+                            existingContract: row['Existing Contract'] || '',
+                            requestorName: '', // Extract from email if possible
+                            requestorEmail: row["Requestor's e-mail address"] || '',
+                            procurementContact: row['Procurement Contact'] || '',
+                            stakeholderName: row['Stakeholder Name'] || '',
+                            stakeholderEmail: row['Stakeholder email'] || '',
+                            vendorName: row['Vendor Name'] || row['OEM / Manufacturer'] || '',
+                            supplierEmail: row['Supplier Contact E-mail'] || '',
+                            onboardingStatus: row['Onboarding Status'] || row['Supplier Onboarding'] || '',
+                            paymentTerms: row['Payment Terms'] || row['Payment terms'] || '',
+                            supplierReq: row['Supplier REQ from Softools / Nomia'] || '',
+                            newVendor: row['New Vendor?'] || '',
+                            previousPrice: row['Prev Price if known'] || row['Baseline/Historic Price (excl. VAT)'] || '',
+                            deliveryAddress: row['Delivery address (for Jamie)'] || row['Delivery Location'] || '',
+                            buyingStatus: row['Buying Status(Completed. In Progress, Cancelled, On Hold)'] || '',
+                            slaDays: row['SLA (Days)'] || row['SLA Days'] || '',
+                            slaSuspension: row['SLA Suspension Reason'] || ''
+                        };
+                        
+                        // Log the first row mapping for debugging
+                        if (jsonData.indexOf(row) === 0) {
+                            console.log("Mapped first row:", mapData);
+                        }
+                        
+                        return mapData;
+                    });
+                    
+                    // Find or create activity log from workflow history if it exists
+                    activitySheetName = findSheetWithColumn(originalWorkbook, 'Action Type');
+                    
+                    if (activitySheetName) {
+                        const activityWorksheet = originalWorkbook.Sheets[activitySheetName];
+                        const activityData = XLSX.utils.sheet_to_json(activityWorksheet);
+                        
+                        activityLog = activityData.map(row => {
+                            return {
+                                timestamp: row['Timestamp'] || '',
+                                rfqNumber: row['RFQ#'] || '',
+                                projectTitle: row['Project Title'] || '',
+                                actionType: row['Action Type'] || '',
+                                user: row['User'] || '',
+                                updateDetails: row['Update Details'] || row['Brief update'] || '',
+                                stageMerck: row['Stage (Merck)'] || '',
+                                stageNomia: row['Stage (Nomia)'] || '',
+                                actionWith: row['Action With'] || row['Action with'] || ''
+                            };
+                        });
+                    } else {
+                        // If no activity log sheet, create activity entries from rfq data
+                        activityLog = [];
+                        rfqDatabase.forEach(rfq => {
+                            if (rfq.briefUpdate) {
+                                activityLog.push({
+                                    timestamp: new Date().toLocaleString(),
+                                    rfqNumber: rfq.rfqNumber,
+                                    projectTitle: rfq.projectTitle,
+                                    actionType: 'Import',
+                                    user: document.getElementById('current-user').textContent,
+                                    updateDetails: rfq.briefUpdate,
+                                    stageMerck: rfq.stageMerck,
+                                    stageNomia: rfq.stageNomia,
+                                    actionWith: rfq.actionWith
+                                });
+                            }
+                        });
+                    }
+                    
+                    // Enable the download button now that we have an Excel file
+                    downloadExcelBtn.disabled = false;
+                    
+                    // Update status message
+                    excelStatusMessage.innerHTML = `
+                        <span style="color: #4caf50;">✓</span> File loaded: <strong>${originalFileName}</strong><br>
+                        <span style="font-size: 12px;">RFQ data from sheet: ${rfqSheetName} (${jsonData.length} records)</span>
+                    `;
+                    
+                    excelModified = false;
+                    excelUpdateReminder.style.display = 'none';
+                    
+                    // Refresh views
+                    refreshDashboard();
+                    refreshRecords();
+                    populateVendorFilter();
+                    
+                    showAlert(alertSuccess, `Imported ${rfqDatabase.length} RFQ records from Excel!`);
+                    
+                } catch (error) {
+                    console.error('Error processing Excel file:', error);
+                    excelStatusMessage.innerHTML = `
+                        <span style="color: #f44336;">✗</span> Error reading file: ${error.message}
+                    `;
+                    downloadExcelBtn.disabled = true;
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        });
+        
+        // Simplified function to find a sheet containing a specific column
+        function findSheetWithColumn(workbook, columnName) {
+            for (const sheetName of workbook.SheetNames) {
+                const worksheet = workbook.Sheets[sheetName];
+                const headerRow = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
+                
+                // Check if the column exists in this sheet
+                if (headerRow.includes(columnName)) {
+                    return sheetName;
+                }
+            }
+            return null;
+        }
+        
+        // Keep the original function for backward compatibility
+        function findSheetWithColumns(workbook, columnNames) {
+            for (const sheetName of workbook.SheetNames) {
+                const worksheet = workbook.Sheets[sheetName];
+                const headerRow = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
+                
+                // Check if all required columns exist in this sheet
+                const hasAllColumns = columnNames.every(col => headerRow.includes(col));
+                
+                if (hasAllColumns) {
+                    return sheetName;
+                }
+            }
+            return null;
+        }
+        
+        // Function to download the updated Excel file
+        downloadExcelBtn.addEventListener('click', function() {
+            if (!originalWorkbook) {
+                showAlert(alertError, 'Please upload an Excel file first!');
+                return;
+            }
+            
+            try {
+                // Create a copy of the original workbook
+                const updatedWorkbook = XLSX.utils.book_new();
+                
+                // Copy all sheets and properties from original workbook
+                originalWorkbook.SheetNames.forEach(name => {
+                    // If this is the RFQ data sheet, update it with current data
+                    if (name === rfqSheetName) {
+                        // Get original headers to maintain column order and include all original columns
+                        const worksheet = originalWorkbook.Sheets[name];
+                        const originalData = XLSX.utils.sheet_to_json(worksheet);
+                        
+                        if (originalData.length === 0) {
+                            // If original sheet was empty, just create a new one with our data
+                            const updatedRfqData = convertRfqDataToExcel(rfqDatabase);
+                            const updatedWorksheet = XLSX.utils.json_to_sheet(updatedRfqData);
+                            XLSX.utils.book_append_sheet(updatedWorkbook, updatedWorksheet, name);
+                        } else {
+                            // Get original headers
+                            const originalHeaders = Object.keys(originalData[0]);
+                            
+                            // Create a mapping for our data
+                            const updatedData = originalData.map((originalRow, index) => {
+                                // Try to find the corresponding record in our database
+                                const rfqId = originalRow['RFQ#'];
+                                const rfqRecord = rfqDatabase.find(r => r.rfqNumber === rfqId);
+                                
+                                // If we found a matching record, update the values
+                                if (rfqRecord) {
+                                    // Create a new row with all original columns
+                                    const newRow = {...originalRow};
+                                    
+                                    // Update with our mapped data
+                                    newRow['RFQ#'] = rfqRecord.rfqNumber;
+                                    newRow['Project Title'] = rfqRecord.projectTitle;
+                                    newRow['Stage (Merck)'] = rfqRecord.stageMerck;
+                                    newRow['Stage (Nomia)'] = rfqRecord.stageNomia;
+                                    newRow['Buyer Latest Status'] = rfqRecord.buyerStatus;
+                                    newRow['Saas Or On-Prem Terms'] = rfqRecord.saasOnprem;
+                                    newRow['MSA Status'] = rfqRecord.msaStatus;
+                                    newRow['Are we able to place PO on TPV'] = rfqRecord.poTpv;
+                                    newRow['Current MSA in place Merck/Supplier (Yes / No)'] = rfqRecord.currentMsa;
+                                    newRow['Action with'] = rfqRecord.actionWith;
+                                    newRow['Date initiated platform'] = rfqRecord.dateInitiated;
+                                    newRow['Date passed to Nomia'] = rfqRecord.datePassed;
+                                    newRow['Buyer'] = rfqRecord.buyer;
+                                    newRow['Category'] = rfqRecord.category;
+                                    newRow['Current expiration date'] = rfqRecord.expirationDate;
+                                    newRow['Renewal Start Date'] = rfqRecord.renewalStart;
+                                    newRow['Renewal End date'] = rfqRecord.renewalEnd;
+                                    newRow['Priority'] = rfqRecord.priority;
+                                    newRow['OEM / Manufacturer'] = rfqRecord.manufacturer;
+                                    newRow['Manual or Platform'] = rfqRecord.manualPlatform;
+                                    newRow['Brief update'] = rfqRecord.briefUpdate;
+                                    newRow['Mgrs comments'] = rfqRecord.managerComments;
+                                    newRow['Payment terms'] = rfqRecord.paymentTerms;
+                                    newRow['Prev Price if known'] = rfqRecord.previousPrice;
+                                    newRow['Delivery address (for Jamie)'] = rfqRecord.deliveryAddress;
+                                    newRow['Buying Status(Completed. In Progress, Cancelled, On Hold)'] = rfqRecord.buyingStatus;
+                                    newRow["Requestor's e-mail address"] = rfqRecord.requestorEmail;
+                                    newRow['Procurement Contact'] = rfqRecord.procurementContact;
+                                    newRow['Stakeholder Name'] = rfqRecord.stakeholderName;
+                                    newRow['Stakeholder email'] = rfqRecord.stakeholderEmail;
+                                    newRow['SLA Suspension Reason'] = rfqRecord.slaSuspension;
+                                    newRow['New Vendor?'] = rfqRecord.newVendor;
+                                    newRow['Onboarding Status'] = rfqRecord.onboardingStatus;
+                                    newRow['Supplier REQ from Softools / Nomia'] = rfqRecord.supplierReq;
+                                    newRow['Vendor Name'] = rfqRecord.vendorName;
+                                    newRow['Supplier Contact E-mail'] = rfqRecord.supplierEmail;
+                                    newRow['Payment Terms'] = rfqRecord.paymentTerms;
+                                    newRow['Existing Contract'] = rfqRecord.existingContract;
+                                    newRow['SLA (Days)'] = rfqRecord.slaDays;
+                                    
+                                    // MSA issued date needs special handling because the column name has a missing )
+                                    if ('MSA issued to supplier Date (#/Month/Year' in newRow) {
+                                        newRow['MSA issued to supplier Date (#/Month/Year'] = rfqRecord.msaIssued;
+                                    }
+                                    
+                                    return newRow;
+                                }
+                                
+                                // If no matching record found, keep the original row
+                                return originalRow;
+                            });
+                            
+                            // Add any new records that were added in the app but not in the original Excel
+                            rfqDatabase.forEach(rfqRecord => {
+                                // Check if this record already exists in the updated data
+                                const existingRecord = updatedData.find(row => row['RFQ#'] === rfqRecord.rfqNumber);
+                                
+                                if (!existingRecord) {
+                                    // Create a new row with all the original headers (initialized as empty)
+                                    const newRow = {};
+                                    originalHeaders.forEach(header => {
+                                        newRow[header] = '';
+                                    });
+                                    
+                                    // Fill in the values we have
+                                    newRow['RFQ#'] = rfqRecord.rfqNumber;
+                                    newRow['Project Title'] = rfqRecord.projectTitle;
+                                    newRow['Stage (Merck)'] = rfqRecord.stageMerck;
+                                    newRow['Stage (Nomia)'] = rfqRecord.stageNomia;
+                                    newRow['Buyer Latest Status'] = rfqRecord.buyerStatus;
+                                    newRow['Saas Or On-Prem Terms'] = rfqRecord.saasOnprem;
+                                    newRow['MSA Status'] = rfqRecord.msaStatus;
+                                    newRow['Are we able to place PO on TPV'] = rfqRecord.poTpv;
+                                    newRow['Current MSA in place Merck/Supplier (Yes / No)'] = rfqRecord.currentMsa;
+                                    newRow['Action with'] = rfqRecord.actionWith;
+                                    newRow['Date initiated platform'] = rfqRecord.dateInitiated;
+                                    newRow['Date passed to Nomia'] = rfqRecord.datePassed;
+                                    newRow['Buyer'] = rfqRecord.buyer;
+                                    newRow['Category'] = rfqRecord.category;
+                                    newRow['Current expiration date'] = rfqRecord.expirationDate;
+                                    newRow['Renewal Start Date'] = rfqRecord.renewalStart;
+                                    newRow['Renewal End date'] = rfqRecord.renewalEnd;
+                                    newRow['Priority'] = rfqRecord.priority;
+                                    newRow['OEM / Manufacturer'] = rfqRecord.manufacturer;
+                                    newRow['Manual or Platform'] = rfqRecord.manualPlatform;
+                                    newRow['Brief update'] = rfqRecord.briefUpdate;
+                                    newRow['Mgrs comments'] = rfqRecord.managerComments;
+                                    newRow['Payment terms'] = rfqRecord.paymentTerms;
+                                    newRow['Prev Price if known'] = rfqRecord.previousPrice;
+                                    newRow['Delivery address (for Jamie)'] = rfqRecord.deliveryAddress;
+                                    newRow['Buying Status(Completed. In Progress, Cancelled, On Hold)'] = rfqRecord.buyingStatus;
+                                    newRow["Requestor's e-mail address"] = rfqRecord.requestorEmail;
+                                    newRow['Procurement Contact'] = rfqRecord.procurementContact;
+                                    newRow['Stakeholder Name'] = rfqRecord.stakeholderName;
+                                    newRow['Stakeholder email'] = rfqRecord.stakeholderEmail;
+                                    newRow['SLA Suspension Reason'] = rfqRecord.slaSuspension;
+                                    newRow['New Vendor?'] = rfqRecord.newVendor;
+                                    newRow['Onboarding Status'] = rfqRecord.onboardingStatus;
+                                    newRow['Supplier REQ from Softools / Nomia'] = rfqRecord.supplierReq;
+                                    newRow['Vendor Name'] = rfqRecord.vendorName;
+                                    newRow['Supplier Contact E-mail'] = rfqRecord.supplierEmail;
+                                    newRow['Payment Terms'] = rfqRecord.paymentTerms;
+                                    newRow['Existing Contract'] = rfqRecord.existingContract;
+                                    newRow['SLA (Days)'] = rfqRecord.slaDays;
+                                    
+                                    // MSA issued date needs special handling because the column name has a missing )
+                                    if ('MSA issued to supplier Date (#/Month/Year' in originalData[0]) {
+                                        newRow['MSA issued to supplier Date (#/Month/Year'] = rfqRecord.msaIssued;
+                                    }
+                                    
+                                    updatedData.push(newRow);
+                                }
+                            });
+                            
+                            // Create updated worksheet while preserving column order
+                            const updatedWorksheet = XLSX.utils.json_to_sheet(updatedData);
+                            XLSX.utils.book_append_sheet(updatedWorkbook, updatedWorksheet, name);
+                        }
+                    } 
+                    // Handle activity log sheet if it exists
+                    else if (name === activitySheetName && activitySheetName) {
+                        // Convert activity log to Excel format
+                        const updatedActivityData = activityLog.map(log => {
+                            return {
+                                'Timestamp': log.timestamp,
+                                'RFQ#': log.rfqNumber,
+                                'Project Title': log.projectTitle,
+                                'Action Type': log.actionType,
+                                'User': log.user,
+                                'Update Details': log.updateDetails,
+                                'Stage (Merck)': log.stageMerck,
+                                'Stage (Nomia)': log.stageNomia,
+                                'Action With': log.actionWith
+                            };
+                        });
+                        
+                        // Create updated worksheet
+                        const updatedWorksheet = XLSX.utils.json_to_sheet(updatedActivityData);
+                        XLSX.utils.book_append_sheet(updatedWorkbook, updatedWorksheet, name);
+                    }
+                    // Otherwise, copy the sheet as is
+                    else {
+                        const clonedSheet = cloneSheet(originalWorkbook.Sheets[name]);
+                        XLSX.utils.book_append_sheet(updatedWorkbook, clonedSheet, name);
+                    }
+                });
+                
+                // Create activity log sheet if it doesn't exist but we have activity data
+                if (!activitySheetName && activityLog.length > 0) {
+                    const activityData = activityLog.map(log => {
+                        return {
+                            'Timestamp': log.timestamp,
+                            'RFQ#': log.rfqNumber,
+                            'Project Title': log.projectTitle,
+                            'Action Type': log.actionType,
+                            'User': log.user,
+                            'Update Details': log.updateDetails,
+                            'Stage (Merck)': log.stageMerck,
+                            'Stage (Nomia)': log.stageNomia,
+                            'Action With': log.actionWith
+                        };
+                    });
+                    
+                    const activityWorksheet = XLSX.utils.json_to_sheet(activityData);
+                    XLSX.utils.book_append_sheet(updatedWorkbook, activityWorksheet, "Activity Log");
+                }
+                
+                // Copy workbook properties and custom properties
+                if (originalWorkbook.Props) updatedWorkbook.Props = originalWorkbook.Props;
+                if (originalWorkbook.Custprops) updatedWorkbook.Custprops = originalWorkbook.Custprops;
+                
+                // Generate the filename with "Updated" to distinguish from original
+                let downloadName = originalFileName;
+                if (downloadName.includes('.')) {
+                    const parts = downloadName.split('.');
+                    const ext = parts.pop();
+                    downloadName = parts.join('.') + '_Updated.' + ext;
+                } else {
+                    downloadName += '_Updated.xlsx';
+                }
+                
+                // Write file
+                XLSX.writeFile(updatedWorkbook, downloadName);
+                
+                // Update status
+                excelStatusMessage.innerHTML = `
+                    <span style="color: #4caf50;">✓</span> File updated: <strong>${downloadName}</strong><br>
+                    <span style="font-size: 12px;">Last downloaded: ${new Date().toLocaleTimeString()}</span>
+                `;
+                
+                excelModified = false;
+                excelUpdateReminder.style.display = 'none';
+                
+                showAlert(alertSuccess, 'Excel file updated and downloaded successfully!');
+            } catch (error) {
+                console.error('Error updating Excel file:', error);
+                showAlert(alertError, 'Error updating Excel file: ' + error.message);
+            }
+        });
+        
+        // Helper function to convert RFQ data to Excel format
+        function convertRfqDataToExcel(rfqData) {
+            return rfqData.map(rfq => {
+                return {
+                    'RFQ#': rfq.rfqNumber,
+                    'Project Title': rfq.projectTitle,
+                    'Stage (Merck)': rfq.stageMerck,
+                    'Stage (Nomia)': rfq.stageNomia,
+                    'Supplier Onboarding': rfq.onboardingStatus,
+                    'Buyer Latest Status': rfq.buyerStatus,
+                    'Saas Or On-Prem Terms': rfq.saasOnprem,
+                    'MSA issued to supplier Date (#/Month/Year': rfq.msaIssued,
+                    'MSA Status': rfq.msaStatus,
+                    'Are we able to place PO on TPV': rfq.poTpv,
+                    'Current MSA in place Merck/Supplier (Yes / No)': rfq.currentMsa,
+                    'Action with': rfq.actionWith,
+                    'Date initiated platform': rfq.dateInitiated,
+                    'Date passed to Nomia': rfq.datePassed,
+                    'Buyer': rfq.buyer,
+                    'Category': rfq.category,
+                    'Current expiration date': rfq.expirationDate,
+                    'Renewal Start Date': rfq.renewalStart,
+                    'Renewal End date': rfq.renewalEnd,
+                    'Priority': rfq.priority,
+                    'OEM / Manufacturer': rfq.manufacturer,
+                    'Manual or Platform': rfq.manualPlatform,
+                    'Brief update': rfq.briefUpdate,
+                    'Mgrs comments': rfq.managerComments,
+                    'Payment terms': rfq.paymentTerms,
+                    'Prev Price if known': rfq.previousPrice,
+                    'Delivery address (for Jamie)': rfq.deliveryAddress,
+                    'Buying Status(Completed. In Progress, Cancelled, On Hold)': rfq.buyingStatus,
+                    "Requestor's e-mail address": rfq.requestorEmail,
+                    'Procurement Contact': rfq.procurementContact,
+                    'Stakeholder Name': rfq.stakeholderName,
+                    'Stakeholder email': rfq.stakeholderEmail,
+                    'SLA Suspension Reason': rfq.slaSuspension,
+                    'New Vendor?': rfq.newVendor,
+                    'Onboarding Status': rfq.onboardingStatus,
+                    'Supplier REQ from Softools / Nomia': rfq.supplierReq,
+                    'Vendor Name': rfq.vendorName,
+                    'Supplier Contact E-mail': rfq.supplierEmail,
+                    'Payment Terms': rfq.paymentTerms,
+                    'Existing Contract': rfq.existingContract,
+                    'SLA (Days)': rfq.slaDays
+                };
+            });
+        }
+
+
+    function refreshDashboard() {
+        const tableBody = dashboardTable.querySelector('tbody');
+        tableBody.innerHTML = '';
+        
+        const buyerFilter = filterBuyer.value.trim();
+        const stageFilter = filterStage.value.trim();
+        const priorityFilter = filterPriority.value.trim();
+        const vendorFilter = filterVendor.value.trim();
+        
+        console.log("Applying filters:", { buyerFilter, stageFilter, priorityFilter, vendorFilter });
+        console.log("Database count before filtering:", rfqDatabase.length);
+        
+        // Filter the database
+        let filteredData = [...rfqDatabase]; // Create a copy to avoid modifying the original
+        
+        if (buyerFilter) {
+            filteredData = filteredData.filter(rfq => {
+                return rfq.buyer && rfq.buyer.toLowerCase().includes(buyerFilter.toLowerCase());
+            });
+        }
+        
+        if (stageFilter) {
+            filteredData = filteredData.filter(rfq => {
+                const merckStage = (rfq.stageMerck || '').toLowerCase();
+                const nomiaStage = (rfq.stageNomia || '').toLowerCase();
+                const filterLower = stageFilter.toLowerCase();
+                return merckStage.includes(filterLower) || nomiaStage.includes(filterLower);
+            });
+        }
+        
+        if (priorityFilter) {
+            filteredData = filteredData.filter(rfq => {
+                return rfq.priority && rfq.priority.toLowerCase().includes(priorityFilter.toLowerCase());
+            });
+        }
+        
+        if (vendorFilter) {
+            filteredData = filteredData.filter(rfq => {
+                return (rfq.vendorName && rfq.vendorName.toLowerCase().includes(vendorFilter.toLowerCase())) ||
+                       (rfq.manufacturer && rfq.manufacturer.toLowerCase().includes(vendorFilter.toLowerCase()));
+            });
+        }
+        
+        console.log("Database count after filtering:", filteredData.length);
+        
+        // Sort by newest first (assuming RFQ numbers are sequential)
+        filteredData.sort((a, b) => {
+            // If RFQ numbers are in format "RFQ-YYYY-NNN", sort by newest first
+            if (a.rfqNumber && b.rfqNumber) {
+                return b.rfqNumber.localeCompare(a.rfqNumber);
+            }
+            return 0;
+        });
+        
+        // Display message if no records found
+        if (filteredData.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+                <td colspan="11" style="text-align: center; padding: 20px;">
+                    No records found matching your filters. Try adjusting your filter criteria.
+                </td>
+            `;
+            tableBody.appendChild(emptyRow);
+            return;
+        }
+        
+        // Display filtered data
+        filteredData.forEach(rfq => {
+            const row = document.createElement('tr');
+            
+            // Determine priority badge class
+            let priorityClass = 'badge-secondary'; // Default gray
+            if (rfq.priority) {
+                const priorityLower = rfq.priority.toLowerCase();
+                if (priorityLower.includes('high')) priorityClass = 'badge-danger';
+                else if (priorityLower.includes('medium')) priorityClass = 'badge-warning';
+                else if (priorityLower.includes('low')) priorityClass = 'badge-success';
+            }
+            
+            row.innerHTML = `
+                <td>${rfq.rfqNumber || ''}</td>
+                <td>${rfq.projectTitle || ''}</td>
+                <td>${rfq.buyer || ''}</td>
+                <td><span class="badge ${priorityClass}">${rfq.priority || 'N/A'}</span></td>
+                <td>${rfq.stageMerck || ''}</td>
+                <td>${rfq.stageNomia || ''}</td>
+                <td>${rfq.vendorName || rfq.manufacturer || ''}</td>
+                <td>${rfq.actionWith || ''}</td>
+                <td>${rfq.briefUpdate || ''}</td>
+                <td>${formatDate(rfq.expirationDate) || ''}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm edit-record" data-rfq="${rfq.rfqNumber}">Edit</button>
+                </td>
+            `;
+            
+            tableBody.appendChild(row);
+        });
+        
+        // Add event listeners to Edit buttons
+        document.querySelectorAll('.edit-record').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const rfqNumber = this.getAttribute('data-rfq');
+                document.getElementById('rfq-number').value = rfqNumber;
+                
+                // Switch to Input tab
+                document.querySelector('[data-tab="input-tab"]').click();
+                
+                // Search for this RFQ
+                searchRFQ();
+            });
+        });
+
+        const selectElement = document.getElementById('filter-vendor');
+
+  selectElement.addEventListener('change', function(event) {
+    const selectedValue = event.target.value;
+    console.log('Selected value:', selectedValue);
+    refreshDashboard();
+  });
+    }
+
+    // Modify the populateVendorFilter function to work with your data
+    function populateVendorFilter() {
+        // Get unique vendor names from both vendorName and manufacturer fields
+        const vendors = new Set();
+        
+        rfqDatabase.forEach(rfq => {
+            if (rfq.vendorName && rfq.vendorName.trim() !== '') {
+                vendors.add(rfq.vendorName.trim());
+            }
+            if (rfq.manufacturer && rfq.manufacturer.trim() !== '' && 
+                rfq.manufacturer !== rfq.vendorName) {
+                vendors.add(rfq.manufacturer.trim());
+            }
+        });
+        
+        // Convert to array and sort alphabetically
+        const sortedVendors = Array.from(vendors).sort();
+        
+        console.log("Found vendors:", sortedVendors);
+        
+        // Clear existing options except the first one
+        const vendorSelect = document.getElementById('filter-vendor');
+        while (vendorSelect.options.length > 1) {
+            vendorSelect.remove(1);
+        }
+        
+        // Add vendors to dropdown
+        sortedVendors.forEach(vendor => {
+            const option = document.createElement('option');
+            option.value = vendor;
+            option.textContent = vendor;
+            vendorSelect.appendChild(option);
+        });
+    }
+
+  
+
+    // Update stage filter dropdown
+    function populateStageFilter() {
+        // Get unique stages from both Merck and Nomia
+        const stages = new Set();
+        
+        rfqDatabase.forEach(rfq => {
+            if (rfq.stageMerck && rfq.stageMerck.trim() !== '') {
+                stages.add(rfq.stageMerck.trim());
+            }
+            if (rfq.stageNomia && rfq.stageNomia.trim() !== '') {
+                stages.add(rfq.stageNomia.trim());
+            }
+        });
+        
+        // Convert to array and sort alphabetically
+        const sortedStages = Array.from(stages).sort();
+        
+        console.log("Found stages:", sortedStages);
+        
+        // Clear existing options except the first one
+        const stageSelect = document.getElementById('filter-stage');
+        while (stageSelect.options.length > 1) {
+            stageSelect.remove(1);
+        }
+        
+        // Add stages to dropdown
+        sortedStages.forEach(stage => {
+            const option = document.createElement('option');
+            option.value = stage;
+            option.textContent = stage;
+            stageSelect.appendChild(option);
+        });
+    }
+
+    // Update priority filter dropdown
+    function populatePriorityFilter() {
+        // Get unique priorities
+        const priorities = new Set();
+        
+        rfqDatabase.forEach(rfq => {
+            if (rfq.priority && rfq.priority.trim() !== '') {
+                priorities.add(rfq.priority.trim());
+            }
+        });
+        
+        // Convert to array and sort by importance (High, Medium, Low)
+        const sortedPriorities = Array.from(priorities).sort((a, b) => {
+            const order = { 'high': 0, 'medium': 1, 'low': 2 };
+            const aValue = order[a.toLowerCase()] !== undefined ? order[a.toLowerCase()] : 3;
+            const bValue = order[b.toLowerCase()] !== undefined ? order[b.toLowerCase()] : 3;
+            return aValue - bValue;
+        });
+        
+        console.log("Found priorities:", sortedPriorities);
+        
+        // Clear existing options except the first one
+        const prioritySelect = document.getElementById('filter-priority');
+        while (prioritySelect.options.length > 1) {
+            prioritySelect.remove(1);
+        }
+        
+        // Add priorities to dropdown
+        sortedPriorities.forEach(priority => {
+            const option = document.createElement('option');
+            option.value = priority;
+            option.textContent = priority;
+            prioritySelect.appendChild(option);
+        });
+    }
+
+    // Event listeners for filter buttons
+    applyFilterBtn.addEventListener('click', function() {
+        refreshDashboard();
+    });
+    
+    clearFilterBtn.addEventListener('click', function() {
+        filterBuyer.value = '';
+        filterStage.value = '';
+        filterPriority.value = '';
+        filterVendor.value = '';
+        refreshDashboard();
+    });
+
+    // Modify the initialize function to populate all filter dropdowns
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Excel section
+        downloadExcelBtn.disabled = true;
+        excelStatusDiv.style.display = 'none';
+        excelUpdateReminder.style.display = 'none';
+        
+        refreshDashboard();
+        refreshRecords();
+    });
+
+    // Update the Excel import function to also populate filters
+    excelFileInput.addEventListener('change', function(e) {
+        // ... [existing code for file handling] ...
+        
+        // After Excel processing:
+        populateVendorFilter();
+        populateBuyerFilter();
+        populateStageFilter();
+        populatePriorityFilter();
+        
+        // ... [rest of existing code] ...
+    });
+
+    
+    </script>
+</body>
+</html>
