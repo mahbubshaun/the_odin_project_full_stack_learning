@@ -2,6 +2,7 @@
 import { format } from 'date-fns';
 import { Project, ProjectManager } from '../js/modules/project.js'; // Add Project to imports
 import { Storage } from '../storage/storage.js';
+import { Todo } from '../js/modules/todo.js'; // Add Todo to imports
 
 export class UI {
     constructor() {
@@ -11,36 +12,37 @@ export class UI {
     }
 
     init() {
-        // this.loadData();
+        this.loadData();
         this.renderProjects();
         this.renderTodos();
         this.setupEventListeners();
     }
 
-    // loadData() {
-    //     const data = Storage.load();
-    //     if (data) {
-    //         this.projectManager.projects = data.map(projectData => {
-    //             const project = new Project(projectData.name);
-    //             project.id = projectData.id;
-    //             project.todos = projectData.todos.map(todoData => {
-    //                 const todo = new Todo(
-    //                     todoData.title,
-    //                     todoData.description,
-    //                     todoData.dueDate,
-    //                     todoData.priority,
-    //                     todoData.notes,
-    //                     todoData.checklist
-    //                 );
-    //                 todo.id = todoData.id;
-    //                 todo.completed = todoData.completed;
-    //                 return todo;
-    //             });
-    //             return project;
-    //         });
-    //         this.currentProject = this.projectManager.projects[0];
-    //     }
-    // }
+    loadData() {
+        const data = Storage.load();
+        console.log(typeof data, data);
+        if (data) {
+            this.projectManager.projects = data.map(projectData => {
+                const project = new Project(projectData.name);
+                project.id = projectData.id;
+                project.todos = projectData.todos.map(todoData => {
+                    const todo = new Todo(
+                        todoData.title,
+                        todoData.description,
+                        todoData.dueDate,
+                        todoData.priority,
+                        todoData.notes,
+                        todoData.checklist
+                    );
+                    todo.id = todoData.id;
+                    todo.completed = todoData.completed;
+                    return todo;
+                });
+                return project;
+            });
+            this.currentProject = this.projectManager.projects[0];
+        }
+    }
 
     renderProjects() {
         const projectList = document.getElementById('project-list');

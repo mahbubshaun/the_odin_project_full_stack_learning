@@ -12,11 +12,14 @@ export const Storage = {
         try {
             const data = localStorage.getItem('todoData');
             if (!data) return null;
+
+            console.log('Loaded data:', data);
+            return JSON.parse(data);
             
-            return JSON.parse(data, (key, value) => {
-                if (key === 'dueDate') return new Date(value);
-                return value;
-            });
+            // return JSON.parse(data, (key, value) => {
+            //     if (key === 'dueDate') return new Date(value);
+            //     return value;
+            // });
         } catch (error) {
             console.error('Failed to load data:', error);
             return null;
