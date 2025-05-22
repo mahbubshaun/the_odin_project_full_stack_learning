@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA Dashboard</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 0.8rem 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 1rem;
+            background-color: var(--light);
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-body {
+            padding: 1rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            margin: 0 -0.5rem;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: var(--light);
+        }
+
+        .url-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .url-item:last-child {
+            border-bottom: none;
+        }
+
+        .url-item .actions {
+            display: flex;
+        }
+
+        .log-container {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #2c3e50;
+            color: #f5f5f5;
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .log-info {
+            color: #3498db;
+        }
+
+        .log-warning {
+            color: #f39c12;
+        }
+
+        .log-error {
+            color: #e74c3c;
+        }
+
+        .log-success {
+            color: #2ecc71;
+        }
+
+        .pdf-container {
+            height: 600px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            margin-top: 1rem;
+        }
+
+        .html-editor {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ddd;
+            margin-top: 1rem;
+            font-family: monospace;
+            padding: 1rem;
+        }
+
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">RPA Dashboard</div>
+            <div class="nav-item active" data-section="script-control">Script Control</div>
+            <div class="nav-item" data-section="url-management">URL Management</div>
+            <div class="nav-item" data-section="html-viewer">HTML Viewer</div>
+            <div class="nav-item" data-section="logs">Logs</div>
+        </div>
+        <div class="main-content">
+            <div class="section active" id="script-control">
+                <div class="panel">
+                    <div class="panel-header">RPA Script Control</div>
+                    <div class="panel-body">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="script-path">Script Path</label>
+                                    <input type="text" id="script-path" placeholder="Enter path to your Python script">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="script-params">Script Parameters (optional)</label>
+                                    <input type="text" id="script-params" placeholder="Enter parameters">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="run-script">Run Script</button>
+                            <button class="btn btn-danger" id="stop-script">Stop Script</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-header">Real-time Status</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <span id="script-status">Idle</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Progress:</label>
+                            <progress id="script-progress" value="0" max="100" style="width: 100%;"></progress>
+                        </div>
+                        <div class="form-group">
+                            <label>Recent Logs:</label>
+                            <div class="log-container" id="recent-logs">
+                                <div class="log-entry log-info">[INFO] System initialized and ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="url-management">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>URL Management</span>
+                        <button class="btn btn-primary" id="add-url-btn">Add URL</button>
+                    </div>
+                    <div class="panel-body">
+                        <div id="url-list">
+                            <!-- URLs will be added here dynamically -->
+                        </div>
+                        
+                        <div id="add-url-form" style="display: none;">
+                            <div class="form-group">
+                                <label for="url-name">URL Name</label>
+                                <input type="text" id="url-name" placeholder="Enter URL name">
+                            </div>
+                            <div class="form-group">
+                                <label for="url-address">URL Address</label>
+                                <input type="text" id="url-address" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" id="save-url">Save URL</button>
+                                <button class="btn btn-danger" id="cancel-url">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="html-viewer">
+                <div class="panel">
+                    <div class="panel-header">HTML File Handler</div>
+                    <div class="panel-body">
+                        <div class="tab-container">
+                            <div class="tab active" data-tab="import-html">Import HTML</div>
+                            <div class="tab" data-tab="view-pdf">View as PDF</div>
+                            <div class="tab" data-tab="edit-html">Edit HTML</div>
+                        </div>
+                        
+                        <div id="import-html" class="tab-content active">
+                            <div class="form-group">
+                                <label for="html-file">Select HTML file</label>
+                                <input type="file" id="html-file" accept=".html,.htm">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" id="import-html-btn">Import HTML</button>
+                            </div>
+                        </div>
+                        
+                        <div id="view-pdf" class="tab-content" style="display: none;">
+                            <div class="form-group">
+                                <button class="btn btn-primary" id="generate-pdf">Generate PDF</button>
+                            </div>
+                            <div class="pdf-container" id="pdf-viewer">
+                                <p>PDF preview will appear here</p>
+                            </div>
+                        </div>
+                        
+                        <div id="edit-html" class="tab-content" style="display: none;">
+                            <div class="form-group">
+                                <label for="html-editor">Edit HTML Content</label>
+                                <textarea id="html-editor" class="html-editor"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success" id="save-html-changes">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="logs">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>Complete Log History</span>
+                        <button class="btn btn-danger" id="clear-logs">Clear Logs</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="log-container" id="full-logs">
+                                <div class="log-entry log-info">[INFO] System initialized and ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const sectionId = item.getAttribute('data-section');
+                    
+                    // Update navigation items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Update sections
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === sectionId) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // URL Management
+            const urlList = document.getElementById('url-list');
+            const addUrlBtn = document.getElementById('add-url-btn');
+            const addUrlForm = document.getElementById('add-url-form');
+            const saveUrlBtn = document.getElementById('save-url');
+            const cancelUrlBtn = document.getElementById('cancel-url');
+            const urlNameInput = document.getElementById('url-name');
+            const urlAddressInput = document.getElementById('url-address');
+            
+            // Store URLs in localStorage
+            let urls = JSON.parse(localStorage.getItem('rpa-urls')) || [];
+            
+            // Display URLs
+            function renderUrls() {
+                urlList.innerHTML = '';
+                
+                if (urls.length === 0) {
+                    urlList.innerHTML = '<p>No URLs added yet. Click "Add URL" to begin.</p>';
+                    return;
+                }
+                
+                urls.forEach((url, index) => {
+                    const urlItem = document.createElement('div');
+                    urlItem.className = 'url-item';
+                    urlItem.innerHTML = `
+                        <div>
+                            <strong>${url.name}</strong>
+                            <div>${url.address}</div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-primary edit-url" data-index="${index}">Edit</button>
+                            <button class="btn btn-danger delete-url" data-index="${index}">Delete</button>
+                        </div>
+                    `;
+                    urlList.appendChild(urlItem);
+                });
+                
+                // Add event listeners for edit and delete buttons
+                document.querySelectorAll('.edit-url').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        urlNameInput.value = urls[index].name;
+                        urlAddressInput.value = urls[index].address;
+                        addUrlForm.style.display = 'block';
+                        addUrlForm.setAttribute('data-edit-index', index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-url').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        urls.splice(index, 1);
+                        localStorage.setItem('rpa-urls', JSON.stringify(urls));
+                        renderUrls();
+                        addLog('URL deleted successfully', 'info');
+                    });
+                });
+            }
+            
+            // Initialize URL list
+            renderUrls();
+            
+            // Show add URL form
+            addUrlBtn.addEventListener('click', () => {
+                urlNameInput.value = '';
+                urlAddressInput.value = '';
+                addUrlForm.style.display = 'block';
+                addUrlForm.removeAttribute('data-edit-index');
+            });
+            
+            // Cancel URL form
+            cancelUrlBtn.addEventListener('click', () => {
+                addUrlForm.style.display = 'none';
+            });
+            
+            // Save URL
+            saveUrlBtn.addEventListener('click', () => {
+                const name = urlNameInput.value.trim();
+                const address = urlAddressInput.value.trim();
+                
+                if (!name || !address) {
+                    addLog('Please fill in all URL fields', 'error');
+                    return;
+                }
+                
+                if (!address.startsWith('http://') && !address.startsWith('https://')) {
+                    addLog('URL must start with http:// or https://', 'warning');
+                    return;
+                }
+                
+                const editIndex = addUrlForm.getAttribute('data-edit-index');
+                
+                if (editIndex !== null && editIndex !== undefined) {
+                    // Edit existing URL
+                    urls[editIndex] = { name, address };
+                    addLog(`URL "${name}" updated successfully`, 'success');
+                } else {
+                    // Add new URL
+                    urls.push({ name, address });
+                    addLog(`URL "${name}" added successfully`, 'success');
+                }
+                
+                localStorage.setItem('rpa-urls', JSON.stringify(urls));
+                addUrlForm.style.display = 'none';
+                renderUrls();
+            });
+            
+            // HTML File Handler
+            const htmlFileInput = document.getElementById('html-file');
+            const importHtmlBtn = document.getElementById('import-html-btn');
+            const generatePdfBtn = document.getElementById('generate-pdf');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const htmlEditor = document.getElementById('html-editor');
+            const saveHtmlChangesBtn = document.getElementById('save-html-changes');
+            
+            // Tab switching
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Update tab contents
+                    tabContents.forEach(content => {
+                        content.style.display = 'none';
+                        if (content.id === tabId) {
+                            content.style.display = 'block';
+                        }
+                    });
+                });
+            });
+            
+            // Store current HTML content
+            let currentHtmlContent = '';
+            
+            // Import HTML file
+            importHtmlBtn.addEventListener('click', () => {
+                const file = htmlFileInput.files[0];
+                
+                if (!file) {
+                    addLog('Please select an HTML file first', 'warning');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    currentHtmlContent = e.target.result;
+                    htmlEditor.value = currentHtmlContent;
+                    addLog(`HTML file "${file.name}" imported successfully`, 'success');
+                    
+                    // Switch to edit tab
+                    document.querySelector('[data-tab="edit-html"]').click();
+                };
+                
+                reader.onerror = () => {
+                    addLog('Error reading HTML file', 'error');
+                };
+                
+                reader.readAsText(file);
+            });
+            
+            // Generate PDF view
+            generatePdfBtn.addEventListener('click', () => {
+                if (!currentHtmlContent) {
+                    addLog('Please import an HTML file first', 'warning');
+                    return;
+                }
+                
+                // Create an iframe to display the HTML content
+                pdfViewer.innerHTML = '';
+                const iframe = document.createElement('iframe');
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.border = 'none';
+                pdfViewer.appendChild(iframe);
+                
+                // Write the HTML content to the iframe
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(currentHtmlContent);
+                iframe.contentWindow.document.close();
+                
+                addLog('PDF view generated', 'info');
+            });
+            
+            // Save HTML changes
+            saveHtmlChangesBtn.addEventListener('click', () => {
+                currentHtmlContent = htmlEditor.value;
+                addLog('HTML changes saved', 'success');
+            });
+            
+            // Script Control
+            const runScriptBtn = document.getElementById('run-script');
+            const stopScriptBtn = document.getElementById('stop-script');
+            const scriptPathInput = document.getElementById('script-path');
+            const scriptParamsInput = document.getElementById('script-params');
+            const scriptStatus = document.getElementById('script-status');
+            const scriptProgress = document.getElementById('script-progress');
+            
+            let isScriptRunning = false;
+            let scriptInterval = null;
+            
+            // Run script
+            runScriptBtn.addEventListener('click', () => {
+                const scriptPath = scriptPathInput.value.trim();
+                
+                if (!scriptPath) {
+                    addLog('Please enter a script path', 'error');
+                    return;
+                }
+                
+                if (isScriptRunning) {
+                    addLog('A script is already running', 'warning');
+                    return;
+                }
+                
+                isScriptRunning = true;
+                scriptStatus.textContent = 'Running';
+                scriptStatus.style.color = 'green';
+                
+                // Simulate script execution with random progress updates
+                let progress = 0;
+                scriptProgress.value = progress;
+                
+                addLog(`Starting script execution: ${scriptPath}`, 'info');
+                
+                if (scriptParamsInput.value.trim()) {
+                    addLog(`Script parameters: ${scriptParamsInput.value.trim()}`, 'info');
+                }
+                
+                // Check if URLs are being used in this run
+                if (urls.length > 0) {
+                    addLog(`Script will process ${urls.length} URLs`, 'info');
+                    
+                    // Simulate processing each URL
+                    urls.forEach((url, index) => {
+                        setTimeout(() => {
+                            addLog(`Processing URL (${index + 1}/${urls.length}): ${url.name} - ${url.address}`, 'info');
+                        }, (index + 1) * 1500);
+                    });
+                }
+                
+                scriptInterval = setInterval(() => {
+                    // Simulate random progress
+                    const increment = Math.floor(Math.random() * 5) + 1;
+                    progress += increment;
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(scriptInterval);
+                        scriptInterval = null;
+                        isScriptRunning = false;
+                        scriptStatus.textContent = 'Completed';
+                        addLog('Script execution completed successfully', 'success');
+                        
+                        // Reset after 3 seconds
+                        setTimeout(() => {
+                            scriptStatus.textContent = 'Idle';
+                            scriptStatus.style.color = '';
+                            scriptProgress.value = 0;
+                        }, 3000);
+                    }
+                    
+                    // Log random events
+                    if (Math.random() > 0.7) {
+                        const logTypes = ['info', 'warning', 'success'];
+                        const randomType = logTypes[Math.floor(Math.random() * logTypes.length)];
+                        addLog(`Script event: ${randomScriptMessage()}`, randomType);
+                    }
+                    
+                    scriptProgress.value = progress;
+                }, 1000);
+            });
+            
+            // Stop script
+            stopScriptBtn.addEventListener('click', () => {
+                if (!isScriptRunning) {
+                    addLog('No script is currently running', 'warning');
+                    return;
+                }
+                
+                clearInterval(scriptInterval);
+                scriptInterval = null;
+                isScriptRunning = false;
+                
+                scriptStatus.textContent = 'Stopped';
+                scriptStatus.style.color = 'red';
+                
+                addLog('Script execution stopped by user', 'warning');
+                
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    scriptStatus.textContent = 'Idle';
+                    scriptStatus.style.color = '';
+                }, 3000);
+            });
+            
+            // Logging functionality
+            const recentLogs = document.getElementById('recent-logs');
+            const fullLogs = document.getElementById('full-logs');
+            const clearLogsBtn = document.getElementById('clear-logs');
+            
+            function addLog(message, type = 'info') {
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry log-${type}`;
+                logEntry.innerHTML = `[${timestamp}] [${type.toUpperCase()}] ${message}`;
+                
+                // Add to recent logs (limit to 10 entries)
+                recentLogs.appendChild(logEntry.cloneNode(true));
+                if (recentLogs.children.length > 10) {
+                    recentLogs.removeChild(recentLogs.firstChild);
+                }
+                
+                // Add to full logs
+                fullLogs.appendChild(logEntry);
+                
+                // Scroll to bottom
+                recentLogs.scrollTop = recentLogs.scrollHeight;
+                fullLogs.scrollTop = fullLogs.scrollHeight;
+            }
+            
+            // Clear logs
+            clearLogsBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all logs?')) {
+                    fullLogs.innerHTML = '';
+                    recentLogs.innerHTML = '';
+                    addLog('Logs cleared', 'info');
+                }
+            });
+            
+            // Generate random script messages for simulation
+            function randomScriptMessage() {
+                const messages = [
+                    'Processing data...',
+                    'Connecting to target site...',
+                    'Executing automation sequence...',
+                    'Parsing response data...',
+                    'Navigating to next page...',
+                    'Extracting information...',
+                    'Waiting for element to load...',
+                    'Saving results to file...',
+                    'Verifying data integrity...',
+                    'Performing cleanup operations...'
+                ];
+                return messages[Math.floor(Math.random() * messages.length)];
+            }
+            
+            // Initial log
+            addLog('RPA Dashboard initialized successfully', 'success');
+        });
+    </script>
+</body>
+</html>

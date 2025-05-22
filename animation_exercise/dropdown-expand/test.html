@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Animated Dropdown</title>
+  <style>
+    .dropdown-toggle {
+      cursor: pointer;
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      font-size: 16px;
+    }
+
+    .dropdown-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: rgb(99, 97, 97);
+      overflow: hidden;
+
+      max-height: 0;
+      opacity: 0;
+      display: none;
+    }
+
+    .dropdown-menu li {
+      padding: 10px 20px;
+      color: white;
+      border-top: 1px solid #666;
+    }
+
+    .dropdown-menu.open {
+      display: block;
+      animation: dropdownOpen 0.4s forwards;
+    }
+
+    .dropdown-menu.closing {
+      animation: dropdownClose 0.4s forwards;
+    }
+
+    @keyframes dropdownOpen {
+      from {
+        max-height: 0;
+        opacity: 0;
+      }
+      to {
+        max-height: 200px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes dropdownClose {
+      from {
+        max-height: 200px;
+        opacity: 1;
+      }
+      to {
+        max-height: 0;
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="dropdown-toggle">Toggle Menu</button>
+  <ul class="dropdown-menu">
+    <li>Option 1</li>
+    <li>Option 2</li>
+    <li>Option 3</li>
+  </ul>
+
+  <script>
+    const toggleBtn = document.querySelector('.dropdown-toggle');
+    const dropdown = document.querySelector('.dropdown-menu');
+
+    let isOpen = false;
+
+    toggleBtn.addEventListener('click', () => {
+      if (!isOpen) {
+        dropdown.classList.remove('closing');
+        dropdown.classList.add('open');
+        dropdown.style.display = 'block';
+        isOpen = true;
+      } else {
+        dropdown.classList.remove('open');
+        dropdown.classList.add('closing');
+        dropdown.addEventListener('animationend', function handler() {
+          dropdown.style.display = 'none';
+          dropdown.classList.remove('closing');
+          dropdown.removeEventListener('animationend', handler);
+        });
+        isOpen = false;
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Preencha Este Formulário, Por Favor!</title>
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                    <style>
+                        @page {
+                            size: A4;
+                            margin: 1cm;
+                        }
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .page {
+                            page-break-before: always;
+                        }
+                        .header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            border-bottom: 2px solid black;
+                            padding-bottom: 5px;
+                            margin-bottom: 20px;
+                        }
+                        .header h1 {
+                            font-size: 20px;
+                            margin: 0;
+                            font-weight: bold;
+                        }
+                        .header p {
+                            font-size: 12px;
+                            margin: 0;
+                            text-align: right;
+                        }
+                        .section-title {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 15px;
+                            border-bottom: 1px solid #ccc;
+                            padding-bottom: 5px;
+                        }
+                        .circle {
+                            background-color: #999;
+                            color: white;
+                            border-radius: 50%;
+                            width: 25px;
+                            height: 25px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: bold;
+                            margin-right: 10px;
+                        }
+                        .section-title h2 {
+                            font-size: 16px;
+                            margin: 0;
+                            font-weight: bold;
+                            color: #555;
+                        }
+                        .greeting {
+                            margin-bottom: 15px;
+                        }
+                        .footnote {
+                            font-size: 12px;
+                            font-style: italic;
+                            margin-bottom: 20px;
+                        }
+                        .illustration {
+                            text-align: center;
+                            margin: 20px 0;
+                        }
+                        .consignes {
+                            font-style: italic;
+                            margin: 15px 0;
+                        }
+                        
+                        h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Paragraph lead style */
+.learning-points-lead {
+    font-size: 12px;
+    margin: 15px 0;
+}
+
+/* Italic text */
+.italic {
+    font-style: italic;
+}
+
+/* Strong text */
+.strong {
+    font-weight: bold;
+}
+
+/* Row and columns */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-xs-12, .col-sm-12, .col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.modal-no-padding-left {
+    padding-left: 0 !important;
+}
+
+.modal-no-padding-right {
+    padding-right: 0 !important;
+}
+
+.instruction_table,
+.learning_points_table, table {
+    width: 80%; 
+    margin: 20px auto; 
+    border-collapse: collapse;
+}
+
+.instruction_table td,
+.instruction_table th,
+.learning_points_table td,
+.learning_points_table th , th, td{
+    border: 1px solid #ddd;
+    padding: 8px;
+    vertical-align: top;
+}
+
+.instruction_table th,
+.learning_points_table th , th{
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.instruction_table tr:first-child td,
+.learning_points_table tr:first-child td , tr:first-child td {
+    font-weight: bold;
+}
+
+
+.instruction_table_background, table {
+    background-color: #fafafa;
+}
+
+.intro_table_border , table{
+    border: 2px solid #ccc;
+}
+
+/* Examples block */
+dl dt {
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+dl dd ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+dl dd ul li {
+    margin-bottom: 10px;
+}
+                                          
+
+
+                        
+      
+                     
+                        .footer {
+                            font-size: 10px;
+                            text-align: right;
+
+                            position: absolute;
+                            bottom: 10px;
+                            right: 10px;
+
+                        }
+
+                    </style>
+                </head>
+                <body>
+
+                    <div data-bind="visible: selected_exercise() == 9, with: exercises()[9]" style=""><link rel="stylesheet" data-bind="attr: {href: 'assets/'+$root.lesson_type+'/templates/exercises/PRP/1.css?v=' + new Date().getTime()}" href="assets/valinor/templates/exercises/PRP/1.css?v=1747218690984">
+                        <span class="edit_container"></span>
+                        <div data-bind="template: { name: 'instructions_container_ko_template'}">
+                            <div class="instructions-block">
+                                <span class="glyphicon glyphicon-chevron-right instruction-chevron"></span>
+                                    <!-- ko if: lesson_config_json.use_sco_instructions_and_feedback --><!-- /ko -->
+                                    <!-- ko if: !lesson_config_json.use_sco_instructions_and_feedback -->
+                                        <!-- ko foreach:_data() -->
+                                            <!-- ko if: type() == "instructions" -->
+                                                <div class="exercise-specific-instructions" data-bind="template: { name: 'instruction_ko_template', with: $data }">
+                            <!-- ko if: (type() == "instructions" || type() == "post_instructions" || type() == "learning_points") -->
+                                <!-- ko foreach: contents() -->
+                                    <!-- ko if: type() == "text" -->
+                                        <!-- ko if: lesson_config_json.use_sco_instructions_and_feedback || ($parent.type() == "instructions" && !lesson_config_json.use_sco_instructions_and_feedback)  -->
+                                            <div class="row instruction-row">
+                                                <span data-bind="html: replace_instruction_text(content()), css: {italic: $parent.type() =='post_instructions'}" class="">Agora é a sua vez de dizer as letras. Vamos lá! </span>
+                                            </div>
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko if: (type() == "image" || type() == "image-lg" || type() == "image-md" || type() == "image-sm") && checkResourceExist('assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/image/' +content()) --><!-- /ko -->
+                                    <!-- ko if: type() == "audio"  && $parent.type() == "learning_points" --><!-- /ko -->
+                                    <!-- ko if: type() == "audio"  && $parent.type() != "learning_points" --><!-- /ko -->
+                                    <!-- ko if: type() == "thumbnail" --><!-- /ko -->
+                                    <!-- ko if:type() == "video" --><!-- /ko -->
+                                    <!-- ko if: type() == "table" && typeof content() !== 'undefined' --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                            <div class="pdf-viewer-btn" data-bind="visible: $root.show_pdf_viewer(), click: function() { $root.labs()[0].init_pdf_viewer();}" style="display: none;">
+                                Show PDF
+                            </div>
+                        </div>
+                                            <!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "instructions" --><!-- /ko -->
+                                        <!-- /ko -->
+                                        <!-- ko if: show_instructions() -->
+                                            <span class="italic post-instructions" data-bind="html: instructions.localized_instruction_text()">Instructions: Record yourself saying the sentences aloud. Watch the video. Listen and record EACH word and phrase. Compare yourself to the audio.</span>
+                                        <!-- /ko -->
+                                        <!-- ko if: lesson_config_json.exercise_config[type()].use_sco_instructions == "both" --><!-- /ko -->
+                                        <br>
+                                        <span class="italic post-instructions" data-bind="visible: feedback().visible(), html: $root.localization.attempts_remaining() + feedback().remaining_attempts()">Attempts Remaining: 2</span>
+                                        <!-- ko foreach:_data() -->
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" -->
+                                                <div class="post-instructions" data-bind="template: { name: 'instruction_ko_template', with: $data }">
+                            <!-- ko if: (type() == "instructions" || type() == "post_instructions" || type() == "learning_points") -->
+                                <!-- ko foreach: contents() -->
+                                    <!-- ko if: type() == "text" -->
+                                        <!-- ko if: lesson_config_json.use_sco_instructions_and_feedback || ($parent.type() == "instructions" && !lesson_config_json.use_sco_instructions_and_feedback)  --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko if: (type() == "image" || type() == "image-lg" || type() == "image-md" || type() == "image-sm") && checkResourceExist('assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/image/' +content()) --><!-- /ko -->
+                                    <!-- ko if: type() == "audio"  && $parent.type() == "learning_points" --><!-- /ko -->
+                                    <!-- ko if: type() == "audio"  && $parent.type() != "learning_points" --><!-- /ko -->
+                                    <!-- ko if: type() == "thumbnail" --><!-- /ko -->
+                                    <!-- ko if:type() == "video" --><!-- /ko -->
+                                    <!-- ko if: type() == "table" && typeof content() !== 'undefined' --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                            <div class="pdf-viewer-btn" data-bind="visible: $root.show_pdf_viewer(), click: function() { $root.labs()[0].init_pdf_viewer();}" style="display: none;">
+                                Show PDF
+                            </div>
+                        </div>
+                                            <!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        
+                                            <!-- ko if: type() == "post_instructions" --><!-- /ko -->
+                                        <!-- /ko -->
+                                        <!--ko if:lms_config.using_speech_rec --><!-- /ko -->
+                                    <!-- /ko -->
+                            </div>
+                        </div>
+                        
+                        <div class="PRP-exercise-wrapper counter-reset">
+                            <div class="row PRP-exercise">
+                                <!-- ko foreach: _data() -->
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" -->
+                                        <!-- ko foreach: content.videos() -->
+                                            <div class="PRP-row-container">
+                                                <div class="col-xs-12 col-sm-4 PRP-nopadding-col">
+                                                    <div class="PRP-video-player-container">
+                                                        <div id="mep_2" class="mejs-container svg mejs-sena video_controls video_instruction stim_audio mejs-video" style="width: 537px; height: 302px;"><div class="mejs-inner"><div class="mejs-mediaelement"><video style="height:100%; width:100%;" class="mejs-sena video_controls video_instruction stim_audio" preload="auto" data-bind="attr: { id: 'video_scrolltext_' + $parents[1].id() + '_' + id()}, css : { 'mejs-sena-no-handle' : detectAndroidOrMacFirefox() }" id="video_scrolltext_9_0" src="assets/valinor/scos/23004/media/video/ptn1le01ob04re3vid02.mp4" width="537" height="302">
+                                                            <!-- MP4 for Safari, IE9, iPhone, iPad, Android, and Windows Phone 7 -->
+                                                            <source type="video/mp4" data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/video/'+src() + '.mp4'}" src="assets/valinor/scos/23004/media/video/ptn1le01ob04re3vid02.mp4">
+                                                            <!-- WebM/VP8 for Firefox4, Opera, and Chrome -->
+                                                            <source type="video/webm" data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/video/'+src() + '.webm'}" src="assets/valinor/scos/23004/media/video/ptn1le01ob04re3vid02.webm">
+                                                            <!-- Ogg/Vorbis for older Firefox and Opera versions -->
+                                                            <source type="video/ogg" data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/video/'+src() + '.ogv'}" src="assets/valinor/scos/23004/media/video/ptn1le01ob04re3vid02.ogv">
+                                                            <span data-bind="text:$root.localization.video_not_supported"></span>
+                                                        </video></div><div class="mejs-layers"><div class="mejs-poster mejs-layer" style="display: none; width: 100%; height: 100%;"></div><div class="mejs-overlay mejs-layer" style="width: 100%; height: 100%; display: none;"><div class="mejs-overlay-loading"><span></span></div></div><div class="mejs-overlay mejs-layer" style="display: none; width: 100%; height: 100%;"><div class="mejs-overlay-error"></div></div><div class="mejs-overlay mejs-layer mejs-overlay-play" style="width: 100%; height: 272px;"><div class="mejs-overlay-button" style="margin-top: -35px;"></div></div></div><div class="mejs-controls"><div class="mejs-button mejs-playpause-button mejs-play"><button type="button" aria-controls="mep_2" title="Play/Pause" aria-label="Play/Pause"></button></div><div class="mejs-time"><span class="mejs-currenttime">00:00</span></div><div class="mejs-time-rail" style="width: 484px;"><span class="mejs-time-total" style="width: 474px;"><span class="mejs-time-buffering" style="display: none;"></span><span class="mejs-time-loaded" style="width: 378.133px;"></span><span class="mejs-time-current" style="width: 2.13334px;"></span><span class="mejs-time-handle" style="left: -11px;"></span><span class="mejs-time-float"><span class="mejs-time-float-current">00:00</span><span class="mejs-time-float-corner"></span></span></span></div><div class="mejs-button mejs-volume-button mejs-mute"><button type="button" aria-controls="mep_2" title="Mute Toggle" aria-label="Mute Toggle"></button><div class="mejs-volume-slider" style="display: none;"><div class="mejs-volume-total"></div><div class="mejs-volume-current" style="height: 80px; top: 20px;"></div><div class="mejs-volume-handle" style="top: 17px;"></div></div></div><div class="mejs-button mejs-fullscreen-button sena-icon sena-icon-fullscreen fullscreen-video-button link-cursor"><button type="button" aria-controls="mep_2" title="Fullscreen" aria-label="Fullscreen" style="visibility: hidden;"></button></div></div><div class="mejs-clear"></div></div></div>
+                                                    </div>
+                                                </div>                     
+                                                <div class="col-xs-12 col-sm-8 PRP-content-col">
+                                                    <!-- ko foreach: questions() -->
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud01.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud01.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">arroz</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_1" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_0">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud02.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud02.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">bife</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_3" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_1">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud03.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud03.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">chá</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_5" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_2">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud04.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud04.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">dia</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_7" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_3">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud05.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud05.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">estudante</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_9" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_4">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud06.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud06.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">Eu bebo chá.</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_11" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_5">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud07.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud07.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">Nós somos estudantes de português.</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_13" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_6">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud08.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud08.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">Meu jantar é cedo.</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_15" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_7">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud09.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud09.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">Eu sou a Ângela do Brasil.</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_17" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_8">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" -->
+                                <div class="col-xs-3 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <div data-bind="template: { name: 'question_counter_ko_template'}">
+                            <!-- ko if: $root._data.test() == 'false' -->
+                                <div class="question-counter"></div>
+                            <!-- /ko -->
+                        </div>
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko foreach: responses() -->
+                                        <!-- ko if: $index() == 1 --><!-- /ko -->
+                                    
+                                        <!-- ko if: $index() == 1 -->
+                                            <!-- ko foreach: _data() -->
+                                                <div type="button" class="link-cursor sena-btn sena-btn-md default-audio-button" data-bind="template: { name: 'audio_ko_template', data: $data }, click: function() {if ($parent.selected() == 0) {$parents[1].select_response($parent.id);}}">
+                            <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() -->
+                                <div class="link-cursor paused_audio" data-bind="click: function() { play_audio($element, $parentContext);}">
+                                    <audio class="audio_player" preload="none" data-bind="template: { name : 'audio_src_ko_template', data: content() }">
+                            <!-- ko if: $data -->
+                                <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.mp3'}" type="audio/mp3" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud10.mp3">
+                                <!-- ko if: detectChrome() -->
+                                    <source data-bind=" attr: {src:'assets/'+$root.lesson_type+'/scos/'+$root.sco_number+'/media/audio/'+ $data + '.ogg'}" type="audio/ogg" src="assets/valinor/scos/23004/media/audio/ptn1le01ob04re3aud10.ogg">
+                                <!-- /ko -->
+                                <span data-bind="text:$root.localization.audio_not_supported">Audio not supported.</span>
+                            <!-- /ko -->
+                        </audio>
+                                    <span class="glyphicon glyphicon-play"></span> <span data-bind="text:$root.localization.listen">Listen</span>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_recording() --><!-- /ko -->
+                        </div>
+                                           <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="col-xs-5 SR1-col">
+                                    <!-- ko foreach: _data() -->
+                                        <!-- ko if: type() == "question" -->
+                                            <!-- ko foreach: contents() -->
+                                                <!-- ko if: type() == "text" -->
+                                                    <div class="SR1-text" data-bind="html: content()">Até a próxima.</div>
+                                                <!-- /ko -->
+                                                <!-- ko if: type() == "analysis" --><!-- /ko -->
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    
+                                        <!-- ko if: type() == "question" --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" --><!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    
+                                                        <div data-bind="with: $parents[2]">                               
+                                                            <div class="" data-bind="template: { name: 'prp_ko_template', data: questions()[$parentContext.$data]}">
+                            <!-- ko if: _data()[0].contents()[0].type() != "rec" --><!-- /ko -->
+                            <!-- ko if: _data()[0].contents()[0].type() == "rec" -->
+                                <div class="col-xs-3 PRP-nopadding-col sena-btn-md" data-bind="template: { name: 'prp_rec_ko_template' }">
+                            <!-- ko if: $root.has_rec() && $parent.speech_question() == true -->
+                                <!-- ko if: $root.flash_fallback() && !($root.flash_has_mic() && $root.flash_initialized()) --><!-- /ko -->
+                                <!-- ko if: !$root.flash_fallback() && !$root.recording_allowed() --><!-- /ko -->
+                                <!-- ko if: ($root.flash_fallback() && $root.flash_has_mic() && $root.flash_initialized()) || (!$root.flash_fallback() && $root.recording_allowed()) -->
+                                    <!-- ko if: !$root.flash_fallback() -->
+                                        <audio data-bind="attr: {id: 'voice_recorder_e'+ $parent.id() + '_q_' + id()}, visible: 0" id="voice_recorder_e9_q_19" style="display: none;">
+                                            <!-- ko if: typeof lms_config.get_audio_recording_url !== 'undefined' -->
+                                                <source data-bind="attr: {src: lms_config.get_audio_recording_url + 'voice_recorder_e'+ $parent.id() + '_q_' + (Math.floor(id() / 2))}" src="https://s3.amazonaws.com/ell-serenity-data/clients/2638/students/715880/courses/25/scos/23004/recordings/voice_recorder_e9_q_9">
+                                            <!-- /ko -->
+                                            <source src="">
+                                        </audio>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parent.feedback_showing_answer() -->
+                                        <div class="row">
+                                            <!-- ko if: selected_response() < 0 -->
+                                                <!-- ko if: !recording() -->
+                                                    <!-- ko if: ($parent.recording_disabled() == false && $parent.disableSpeechRecOnly() == false) || ($parent.id() == $root.labs()[0].selected_exercise() && id() == $parent.selected_recording_question()) -->
+                                                        <!-- ko if: !$root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()-->
+                                                            <div class="link-cursor rec_container sena-btn btn-rec-start" data-bind="click: $parent.record_speech.bind(null, id(), 'voice_recorder_e'+ $parent.id() + '_q_' + id())">
+                                                                <span class="sena-icon sena-icon-microphone"></span> <span data-bind="text:$root.localization.record">Record</span>
+                                                            </div>
+                                                        <!-- /ko -->
+                                                    <!-- /ko -->
+                        
+                                                    <!-- ko if: ($parent.recording_disabled() || $parent.disableSpeechRecOnly() == true || $root.labs()[0].exercises()[$root.labs()[0].selected_exercise()].is_waiting_for_speech_recg()) --><!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko if: recording() --><!-- /ko -->
+                                            <!-- /ko -->
+                                            <!-- ko if: selected_response() >= 0 && responses()[selected_response()].correct() --><!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $parent.feedback_showing_answer() --><!-- /ko -->
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                                <div class="col-xs-1">
+                                    <div class="stars-template" data-bind="template: { name: 'rec_stars_ko_template' }" style="margin-left: 0px !important;">
+                            <!-- ko if: $data.speech_rec_score() > -1 --><!-- /ko -->
+                        </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            <!-- /ko -->
+                        </div>
+                                                        </div>
+                                                    <!-- /ko -->
+                                                </div>                    
+                                            </div>                    
+                                            <div class="clearfix PRP-clear"></div>
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                
+                                    <!-- ko if: type() == "PRP_videos" --><!-- /ko -->
+                                <!-- /ko -->
+                            </div>
+                        </div></div>
+
+
+                </body>
+                </html>
