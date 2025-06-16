@@ -1,0 +1,29 @@
+.education-item {
+  margin-bottom: 1.5rem;
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.education-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.education-dates {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.degree {
+  color: #34495e;
+  font-weight: 500;
+}
+
+.no-education {
+  color: #95a5a6;
+  font-style: italic;
+}

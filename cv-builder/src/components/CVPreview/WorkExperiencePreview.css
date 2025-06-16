@@ -1,0 +1,39 @@
+.work-item {
+  margin-bottom: 1.5rem;
+}
+
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.work-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.work-dates {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.company {
+  font-weight: 500;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+}
+
+.responsibilities {
+  margin: 0.5rem 0 0 1rem;
+  padding-left: 1rem;
+}
+
+.responsibilities li {
+  margin-bottom: 0.25rem;
+}
+
+.no-experience {
+  color: #95a5a6;
+  font-style: italic;
+}
