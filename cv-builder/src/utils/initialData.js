@@ -15,8 +15,8 @@ export const initialCVData = {
   ],
   workExperience: [
     {
-      company: '',
       position: '',
+      institution: '',
       startDate: '',
       endDate: '',
       responsibilities: ''

@@ -19,17 +19,21 @@ const WorkExperinceInfoForm = ({
     <Section title="Work Experience">
       <ListManager
         items={workExperienceInfo}
-        onAdd={() =>
+        onAdd={(e) =>
+        {
           setWorkExperienceInfo([
             ...workExperienceInfo,
             {
+            
+              position: "",
               institution: "",
-              degree: "",
               startDate: "",
               endDate: "",
               responsibilities: "",
             },
           ])
+          e.preventDefault();
+        }
         }
         onRemove={(index) =>
           setWorkExperienceInfo(
@@ -40,16 +44,16 @@ const WorkExperinceInfoForm = ({
           <>
             <Input
               label="Job Title"
-              value={item.institution}
+              value={item.position}
               onChange={(e) =>
-                handleItemChange(index, "institution", e.target.value)
+                handleItemChange(index, "position", e.target.value)
               }
             />
             <Input
               label="Company"
-              value={item.degree}
+              value={item.institution}
               onChange={(e) =>
-                handleItemChange(index, "degree", e.target.value)
+                handleItemChange(index, "institution", e.target.value)
               }
             />
             <Input

@@ -1,50 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import CVForm from './components/CVForm'
-import CVPreview from './components/CVPreview'
-import { initialCVData } from './utils/initialData' 
+import { useState } from 'react';
+import CVForm from './components/CVForm';
+import CVPreview from './components/CVPreview';
+import { initialCVData } from './utils/initialData';
+import './App.css';
 
 function App() {
-  const [cvData, setCvData] = useState(initialCVData)
-  const [activeTab, setActiveTab] = useState('form')
+  const [cvData, setCvData] = useState(initialCVData);
+  const [isEditing, setIsEditing] = useState(true);
+  const [submittedData, setSubmittedData] = useState(initialCVData);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedData(cvData);
+    setIsEditing(false);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
 
   return (
-    <>
-      <div className="app">
-        <header className="app-header">
-         <h1>CV Builder</h1>
-         <div className="tabs">
-          <button className={activeTab === 'form'? 'active': ''}
-          onClick={()=> setActiveTab('form')}>
+    <div className="app">
+      <header className="app-header">
+        <h1>CV Builder</h1>
+        {!isEditing && (
+          <button className="edit-button" onClick={handleEdit}>
             Edit CV
-
           </button>
-          <button className={activeTab === 'preview'? 'active': ''}
-          onClick={()=> setActiveTab('preview')}>
-            Preview CV
-          </button>
-         </div>
-        </header>
+        )}
+      </header>
 
-        <main>
-          {/* {activeTab === 'form' ? (
-            <CVForm  cvData={cvData} setCvData={setCvData}/>
-          ): (
-            <CVPreview cvData={cvData}/>
-          ) */}
-
-          <CVForm  cvData={cvData} setCvData={setCvData}/>
-          <CVPreview cvData={cvData}/>
-        {/* } */}
-        </main>
-      
-      </div>
-      
-
-    </>
-  )
+      <main>
+        {isEditing ? (
+          <form onSubmit={handleSubmit}>
+            <CVForm cvData={cvData} setCvData={setCvData} />
+            <button type="submit" className="submit-button">
+              Submit CV
+            </button>
+          </form>
+        ) : (
+          <CVPreview cvData={submittedData} />
+        )}
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

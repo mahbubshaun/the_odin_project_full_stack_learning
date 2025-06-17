@@ -16,12 +16,19 @@ const EducationInfoForm = ({ educationInfo, setEducationInfo }) => {
     <Section title="Education">
       <ListManager
         items={educationInfo}
-        onAdd={() => setEducationInfo([...educationInfo, {
+        onAdd={(e) =>
+          
+          {
+            setEducationInfo([...educationInfo, {
           institution: '',
           degree: '',
           startDate: '',
           endDate: ''
-        }])}
+        }])
+         e.preventDefault();
+      
+          }}
+
         onRemove={(index) => setEducationInfo(educationInfo.filter((_, i) => i !== index))}
         renderItem={(item, index) => (
           <>

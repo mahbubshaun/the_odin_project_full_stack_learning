@@ -14,7 +14,7 @@ const WorkExperiencePreview = ({ data }) => {
                 {work.startDate} {work.endDate ? `- ${work.endDate}` : ''}
               </div>
             </div>
-            <div className="company">{work.company || 'Company Name'}</div>
+            <div className="company">{work.institution|| 'Company Name'}</div>
             {work.responsibilities && (
               <ul className="responsibilities">
                 {work.responsibilities.split('\n').map((item, i) => (
