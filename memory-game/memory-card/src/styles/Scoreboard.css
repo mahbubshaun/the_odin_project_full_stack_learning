@@ -1,0 +1,27 @@
+.scoreboard {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.score {
+  text-align: center;
+}
+
+.score-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.score-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .scoreboard {
+    margin-top: 0;
+  }
+}
