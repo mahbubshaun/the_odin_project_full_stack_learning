@@ -1,5 +1,5 @@
 import '../styles/Header.css';
-import Scoreboard from './Scoreboard';
+import Scoreboard from './ScoreBoard';
 
 function Header({ currentScore, bestScore }) {
   return (
