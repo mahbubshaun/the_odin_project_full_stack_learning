@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Header from "./components/Header";
 import CardGrid from "./components/CardGrid";
 
