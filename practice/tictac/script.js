@@ -1,119 +1,111 @@
-// DOM Elements - Selecting game components from the HTML
-const statusElement = document.querySelector('.status');         // Game status display
-const gameBoardContainer = document.querySelector('#gameBoard'); // Game board container
-const restartElement = document.querySelector('.restart-button'); // Restart button
+const statusElement = document.querySelector('.status')
+const gameBoardContainer = document.querySelector('#gameboard');
+const restartElement = document.querySelector('.restart-button')
 
-// Factory function for creating the game board
-function GameBoard() {
-    // Board dimensions (3x3 grid)
+function Cell()
+{
+    let value = 0;
+    const addToken = (player)=> value = player;
+    const getValue = ()=> value;
+    return {addToken, getValue}
+}
+
+function GameBoard(){
     const rows = 3;
     const columns = 3;
-    const board = [];  // 2D array representing the game board
+    const board = [];
 
-    // Initialize the board with empty cells
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];  // Create new row
-        for (let j = 0; j < columns; j++) {
-            board[i].push(Cell());  // Add new cell to the row
+    [[1,2,3], ]
+
+    for(let i=0;i<rows; i++)
+    {
+        board[i] = [];
+        for(let j=0; j<columns; j++)
+        {
+            board[i].push(Cell());
         }
     }
 
-    // Public methods
-    const getBoard = () => board;  // Get current board state
-
-    // Place player's token on a specific cell
-    const fillBoardCell = (row, column, player) => {
+    const getBoard = ()=> board;
+    const fillBoardCell = (row, column, player) =>
+    {
         board[row][column].addToken(player);
-    };
 
-    // Print current board state to console (for debugging)
-    const printBoard = () => {
-        const boardWithCellValues = board.map(boardRow => 
-            boardRow.map(cell => cell.getValue())
-        );
+    }
+
+    const printBoard = ()=>{
+        const boardWithCellValues = board.map(boardRow =>
+            boardRow.map(cell=> cell.getValue()));
+        
         boardWithCellValues.forEach(row => console.log(row));
     };
+    
 
-    // Reset the board to initial empty state
-    const resetBoard = () => {
-        for (let i = 0; i < rows; i++) {
-            board[i] = [];  // Reset row
+    const resetBoard = () =>
+    {
+        for(let i=0; i<rows; i++)
+        {
+            board[i] = [];
             for (let j = 0; j < columns; j++) {
                 board[i].push(Cell());  // Add new empty cells
             }
+
         }
+
         console.log('Board has been reset');
         printBoard();
-    };
+    }
 
-    // Expose public methods
     return { getBoard, fillBoardCell, printBoard, resetBoard };
 }
 
-// Factory function for individual board cells
-function Cell() {
-    let value = 0;  // 0 = empty, 'X' = player1, 'O' = player2
-
-    // Place a player's token in the cell
-    const addToken = (player) => {
-        value = player;
-    };
-
-    // Get current value of the cell
-    const getValue = () => value;
-
-    return { addToken, getValue };
-}
-
-// Main game controller
-function GameController(
-    playerOneGame = 'Player one', 
+function GameController(playerOneGame = 'Player one',
     playerTwoGame = 'Player two'
-) {
-    const board = GameBoard();  // Create game board instance
+)
+{
+    const board = GameBoard();
 
-    // Player configuration
     const players = [
         {
             name: playerOneGame,
-            marker: 'X',    // Player 1 uses X
-            winCount: 0,    // Track wins
-        },
+            marker: 'X',   
+            winCount: 0,
+        }
+        ,
         {
             name: playerTwoGame,
-            marker: 'O',    // Player 2 uses O
-            winCount: 0
+            marker: 'O',   
+            winCount: 0,
         }
-    ];
+    ]
 
-    let activePlayer = players[0];  // Start with Player 1
-
-    // Update win count for a player
+    let activePlayer = players[0];
     const updatePlayerWinCount = (player) => player.winCount++;
+    const switchPlayerTurn = () =>
+    {
+        activePlayer = activePlayer === players[0] ? players[1]: players[0];
+        console.log(`${getActivePlayer().name}'s turn`)
+        statusElement.textContent = `${getActivePlayer().name}'s turn`;
+    }
 
-    // Switch turns between players
-    const switchPlayerTurn = () => {
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
-        console.log(`${getActivePlayer().name}'s turn. `);
-        statusElement.textContent = `${getActivePlayer().name}'s turn. `;
-    };
-
-    // Get current active player
+        // Get current active player
     const getActivePlayer = () => activePlayer;
 
-    // Start a new round
-    const printNewRound = () => {
+    const printNewRound = ()=>
+    {
         board.printBoard();
         console.log(`${getActivePlayer().name}'s turn. `);
-    };
+    }
 
-    // Print current board state
-    const printCurrentBoard = () => board.printBoard();
+    const printCurrentBoard = () => {
+        console.log('Current board:');
+        board.printBoard();
+    }   
 
-    // Reset the game board
+      // Reset the game board
     const resetCurrentBoard = () => board.resetBoard();
 
-    // Reset to first player
+     // Reset to first player
     const resetActivePlayer = () => {
         activePlayer = players[0];
     };
@@ -174,12 +166,12 @@ function GameController(
         return isDiagonalWin() || isHorizontalWin() || isVerticalWin();
     };
 
-    // Main gameplay function
-    const playTurn = (row, column) => {
+    const playTurn = (row, column) =>
+    {
         board.fillBoardCell(row, column, getActivePlayer().marker);
-    };
+    }
 
-    // Get player's win count
+     // Get player's win count
     const getPlayerWinCount = (player) => player.winCount;
 
     // Initialize first round
@@ -197,17 +189,18 @@ function GameController(
         updatePlayerWinCount,
         checkWinner
     };
+
 }
 
-// Initialize game
-const game = GameController();
+const game  = GameController();
 
-// Game board cell click handlers
-const cells = Array.from(gameBoardContainer.children);
-cells.forEach(cell => cell.addEventListener('click', function(event) {
-    const clickedCell = event.target;  // Get clicked cell
-    const row = clickedCell.getAttribute("data-row");
-    const col = clickedCell.getAttribute("data-col");
+const cells = Array.from(gameBoardContainer.children)
+
+cells.forEach(cell => cell.addEventListener('click', function(event)
+{
+    const clickedCell = event.target;
+    const row = clickedCell.getAttribute('data-row');
+    const column = clickedCell.getAttribute('data-col');
 
     // Prevent overwriting occupied cells
     if (clickedCell.textContent === 'X' || clickedCell.textContent === 'O') {
@@ -215,11 +208,9 @@ cells.forEach(cell => cell.addEventListener('click', function(event) {
         return;
     }
 
-    // Execute game turn
-    game.playTurn(row, col);
+    game.playTurn(row, column);
     clickedCell.textContent = game.getActivePlayer().marker;
 
-    // Check game status
     game.printCurrentBoard();
     if (game.checkWinner()) {
         statusElement.textContent = `${game.getActivePlayer().name} wins!`;
@@ -227,8 +218,9 @@ cells.forEach(cell => cell.addEventListener('click', function(event) {
         return;
     }
 
-    // Continue to next turn
+        // Continue to next turn
     game.switchPlayerTurn();
+
 }));
 
 // Restart button handler
